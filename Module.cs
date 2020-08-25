@@ -25,6 +25,8 @@ namespace BleakMod
             WinchestersHat.Register();
             GundromedaPain.Register();
             Bleaker.Register();
+            CheeseAmmolet.Register();
+            StrawberryJam.Register();
             Overpill.Init();
             JammomancersHat.Init();
             ShotgunEnergyDrink.Init();
