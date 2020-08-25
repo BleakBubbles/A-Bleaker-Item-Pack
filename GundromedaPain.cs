@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +9,8 @@ using MultiplayerBasicExample;
 
 namespace BleakMod
 {
-    public class GundromedaPain: PassiveItem
-    {   
+    public class GundromedaPain : PassiveItem
+    {
         //Call this method from the Start() method of your ETGModule extension
         public static void Register()
         {
@@ -36,12 +36,12 @@ namespace BleakMod
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
-   
+
             //Adds the actual passive effect to the item
-            
 
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.D;
+            item.AddToSubShop(ItemBuilder.ShopType.Goopton, 1f);
         }
         public class AffectedEnemyFlag : MonoBehaviour
         {
@@ -63,9 +63,10 @@ namespace BleakMod
         }
         private void OnNewEnemyAppeared(AIActor aiactor)
         {
-            this.lowerHealthBoundary = aiactor.healthHaver.GetMaxHealth() * 0.6f;
-            this.upperHealthBoundary = aiactor.healthHaver.GetMaxHealth() * 1.1f;
-            aiactor.healthHaver.SetHealthMaximum(UnityEngine.Random.Range(this.lowerHealthBoundary, this.upperHealthBoundary), null, true);
+            this.baseHealth = aiactor.healthHaver.GetMaxHealth();
+            this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.1f);
+            aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
+            aiactor.EnemyScale = new Vector2(1f, 1f) * this.healthSizeMultiplier;
         }
         public override DebrisObject Drop(PlayerController player)
         {
@@ -73,7 +74,7 @@ namespace BleakMod
             debrisObject.GetComponent<GundromedaPain>().m_pickedUpThisRun = true;
             return debrisObject;
         }
-        public float lowerHealthBoundary;
-        public float upperHealthBoundary;
+        public float healthSizeMultiplier;
+        public float baseHealth;
     }
 }
