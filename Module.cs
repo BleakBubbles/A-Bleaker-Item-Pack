@@ -1,4 +1,4 @@
-﻿using ItemAPI;
+using ItemAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace BleakMod
     public class Module : ETGModule
     {
         public static readonly string MOD_NAME = "BleakBubbles's Mod";
-        public static readonly string VERSION = "0.0.5";
+        public static readonly string VERSION = "0.0.6";
         public static readonly string TEXT_COLOR = "#00FFFF";
 
         public override void Start()
@@ -36,6 +36,7 @@ namespace BleakMod
             TargetingSpecs.Init();
             GunShredder.Init();
             GlassPrincesCannon.Add();
+            Rewind.Init();
             Log($"{MOD_NAME} v{VERSION} started successfully.", TEXT_COLOR);
         }
 
