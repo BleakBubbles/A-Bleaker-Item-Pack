@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,7 +41,15 @@ namespace BleakMod
 
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.B;
-        }
+			CustomSynergies.Add("By Beholster Eye, Dragun Tooth", new List<string>
+			{
+				"bb:gungeon_wind"
+			}, new List<string>
+			{
+				"eye_of_the_beholster",
+				"dragunfire"
+			}, true);
+		}
 		public override void Pickup(PlayerController player)
 		{
 			if (this.m_pickedUp)
@@ -62,6 +70,14 @@ namespace BleakMod
 		}
 		public void PossiblyRevealMap()
 		{
+			if (base.Owner.HasMTGConsoleID("eye_of_the_beholster") || base.Owner.HasMTGConsoleID("dragunfire"))
+            {
+				this.revealChanceOnLoad = 1f;
+			}
+            else
+            {
+				this.revealChanceOnLoad = 0.67f;
+            }
 			if (UnityEngine.Random.value < this.revealChanceOnLoad && Minimap.Instance != null)
 			{
 				Minimap.Instance.RevealAllRooms(this.revealSecretRooms);
