@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,8 +35,15 @@ namespace BleakMod
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
-            item.quality = PickupObject.ItemQuality.A;
+            item.quality = PickupObject.ItemQuality.B;
             item.AddToSubShop(ItemBuilder.ShopType.OldRed, 1f);
+            CustomSynergies.Add("Dangerously Cheesy", new List<string>
+            {
+                "bb:cheese_ammolet"
+            }, new List<string>
+            {
+                "elimentaler"
+            }, true);
         }
         public override void Pickup(PlayerController player)
         {
@@ -50,6 +57,14 @@ namespace BleakMod
         }
         private void OnUsedBlank(PlayerController player, int blanksRemaining)
         {
+            if (this.Owner.HasMTGConsoleID("elimentaler"))
+            {
+                this.cheeseApplyChance = 1f;
+            }
+            else
+            {
+                this.cheeseApplyChance = 0.75f;
+            }
             bool isInCombat = player.IsInCombat;
             if (isInCombat)
             {
@@ -64,6 +79,6 @@ namespace BleakMod
             }
         }
         public GameActorCheeseEffect cheeseEffect = (PickupObjectDatabase.GetById(626) as Gun).DefaultModule.projectiles[0].cheeseEffect;
-        public float cheeseApplyChance = 0.75f;
+        public float cheeseApplyChance;
     }
 }
