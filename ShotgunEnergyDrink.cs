@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +41,14 @@ namespace BleakMod
             //Set some other fields
             item.consumable = false;
             item.quality = ItemQuality.A;
+            CustomSynergies.Add("Sugar Breath", new List<string>
+            {
+                "bb:shotgun_energy_drink"
+            }, new List<string>
+            {
+                "shotga_cola",
+                "shotgun_coffee"
+            }, true);
         }
         public override void Pickup(PlayerController user)
         {
@@ -75,10 +83,13 @@ namespace BleakMod
         protected override void DoEffect(PlayerController user)
         {
             AkSoundEngine.PostEvent("Play_OBJ_power_up_01", base.gameObject);
-            user.baseFlatColorOverride = new Color(0, 0, 0, 0);
-            TimesUsed += 1;
+            this.TimesUsed += 1;
             this.StartEffect(user);
             base.StartCoroutine(ItemBuilder.HandleDuration(this, this.duration, user, new Action<PlayerController>(this.EndEffect)));
+            if(!(this.LastOwner.HasMTGConsoleID("shotga_cola") || this.LastOwner.HasMTGConsoleID("shotgun_coffee")))
+            {
+                user.baseFlatColorOverride = new Color(0, 0, 0, 0);
+            }
             float curDamage = user.stats.GetBaseStatValue(PlayerStats.StatType.Damage);
             float newDamage = curDamage -= 0.05f;
             user.stats.SetBaseStatValue(PlayerStats.StatType.Damage, newDamage, user);
@@ -94,10 +105,28 @@ namespace BleakMod
             float curDodgeRollSpeed = user.stats.GetBaseStatValue(PlayerStats.StatType.DodgeRollSpeedMultiplier);
             float newDodgeRollSpeed = curDodgeRollSpeed -= 0.025f;
             user.stats.SetBaseStatValue(PlayerStats.StatType.DodgeRollSpeedMultiplier, newDodgeRollSpeed, user);
+            if (this.LastOwner.HasMTGConsoleID("shotga_cola") || this.LastOwner.HasMTGConsoleID("shotgun_coffee"))
+            {
+                curDamage = user.stats.GetBaseStatValue(PlayerStats.StatType.Damage);
+                newDamage = curDamage += 0.05f;
+                user.stats.SetBaseStatValue(PlayerStats.StatType.Damage, newDamage, user);
+                curRateOfFire = user.stats.GetBaseStatValue(PlayerStats.StatType.RateOfFire);
+                newRateOfFire = curRateOfFire += 0.05f;
+                user.stats.SetBaseStatValue(PlayerStats.StatType.RateOfFire, newRateOfFire, user);
+                curReloadSpeed = user.stats.GetBaseStatValue(PlayerStats.StatType.ReloadSpeed);
+                newReloadSpeed = curReloadSpeed -= 0.05f;
+                user.stats.SetBaseStatValue(PlayerStats.StatType.ReloadSpeed, newReloadSpeed, user);
+                curMovementSpeed = user.stats.GetBaseStatValue(PlayerStats.StatType.MovementSpeed);
+                newMovementSpeed = curMovementSpeed += 0.1f;
+                user.stats.SetBaseStatValue(PlayerStats.StatType.MovementSpeed, newMovementSpeed, user);
+                curDodgeRollSpeed = user.stats.GetBaseStatValue(PlayerStats.StatType.DodgeRollSpeedMultiplier);
+                newDodgeRollSpeed = curDodgeRollSpeed += 0.025f;
+                user.stats.SetBaseStatValue(PlayerStats.StatType.DodgeRollSpeedMultiplier, newDodgeRollSpeed, user);
+            }
         }
         private void StartEffect(PlayerController user)
         {
-            float amount = 0.15f * TimesUsed;
+            float amount = 0.15f * this.TimesUsed;
             this.damageMod = this.AddPassiveStatModifier(PlayerStats.StatType.Damage, amount, StatModifier.ModifyMethod.ADDITIVE);
             this.rateOfFireMod = this.AddPassiveStatModifier(PlayerStats.StatType.RateOfFire, amount, StatModifier.ModifyMethod.ADDITIVE);
             this.reloadSpeedMod = this.AddPassiveStatModifier(PlayerStats.StatType.ReloadSpeed, -amount, StatModifier.ModifyMethod.ADDITIVE);
