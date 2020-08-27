@@ -42,6 +42,13 @@ namespace BleakMod
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.D;
             item.AddToSubShop(ItemBuilder.ShopType.Goopton, 1f);
+            CustomSynergies.Add("No Pain, No Gain", new List<string>
+            {
+                "bb:gundromeda_pain"
+            }, new List<string>
+            {
+                "gundromeda_strain"
+            }, true);
         }
         public class AffectedEnemyFlag : MonoBehaviour
         {
@@ -63,10 +70,19 @@ namespace BleakMod
         }
         private void OnNewEnemyAppeared(AIActor aiactor)
         {
-            this.baseHealth = aiactor.healthHaver.GetMaxHealth();
-            this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.1f);
-            aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
-            aiactor.EnemyScale = new Vector2(1f, 1f) * this.healthSizeMultiplier;
+            if (this.Owner.HasMTGConsoleID("gundromeda_strain"))
+            {
+                this.healthSizeMultiplier = 0.75f;
+                aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
+            }
+            else
+            {
+                this.baseHealth = aiactor.healthHaver.GetMaxHealth();
+                this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.1f);
+                aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
+                aiactor.EnemyScale = new Vector2(1f, 1f) * this.healthSizeMultiplier;
+            }
+            
         }
         public override DebrisObject Drop(PlayerController player)
         {
