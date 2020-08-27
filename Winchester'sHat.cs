@@ -1,166 +1,150 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
 using ItemAPI;
-using Dungeonator;
-using MultiplayerBasicExample;
 
 namespace BleakMod
 {
-    public class WinchestersHat : PassiveItem
-    {
+    public class ShowoffBullets: PassiveItem
+    {   
         //Call this method from the Start() method of your ETGModule extension
         public static void Register()
         {
             //The name of the item
-            string itemName = "Winchester's Hat";
+            string itemName = "Showoff Bullets";
 
             //Refers to an embedded png in the project. Make sure to embed your resources! Google it
-            string resourceName = "BleakMod/Resources/winchester_hats/winchester_hat_right";
+            string resourceName = "BleakMod/Resources/showoff_bullets";
 
             //Create new GameObject
             GameObject obj = new GameObject(itemName);
 
             //Add a PassiveItem component to the object
-            var item = obj.AddComponent<WinchestersHat>();
-
+            var item = obj.AddComponent<ShowoffBullets>();
 
             //Adds a sprite component to the object and adds your texture to the item sprite collection
             ItemBuilder.AddSpriteToObject(itemName, resourceName, obj);
 
             //Ammonomicon entry variables
-            string shortDesc = "M'lady";
-            string longDesc = "Permanently charms all enemies in a radius upon active item use.\n\n" +
-                "Wearing this hat makes you feel as cold and as shady as its original owner. The enemies, however, seem to be all over your new look...";
+            string shortDesc = "Look at me!";
+            string longDesc = "Adds multiple shot modifiers to your bullets, at the cost of a small amount of damage.\n\nThey say he's got it all. The teeth, the hair, the looks... but deep down he knows that he just isn't all that exciting.";
 
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
 
+            //Adds the actual passive effect to the item
+            item.AddPassiveStatModifier(PlayerStats.StatType.AdditionalShotPiercing, 1f, StatModifier.ModifyMethod.ADDITIVE);
+            item.AddPassiveStatModifier(PlayerStats.StatType.AdditionalShotBounces, 2f, StatModifier.ModifyMethod.ADDITIVE);
+            item.AddPassiveStatModifier(PlayerStats.StatType.ProjectileSpeed, 0.5f, StatModifier.ModifyMethod.ADDITIVE);
+
             //Set the rarity of the item
-            item.quality = PickupObject.ItemQuality.D;
-            BuildPrefab();
-        }
-        public override void Pickup(PlayerController player)
-		{
-			if (this.m_pickedUp)
-			{
-				return;
-			}
-			base.Pickup(player);
-            this.InternalCooldown = 5f;
-            this.m_lastUsedTime = -1000f;
-            player.OnUsedPlayerItem += this.DoEffect;
-		}
-		private void DoEffect(PlayerController usingPlayer, PlayerItem usedItem)
-		{
-            if (Time.realtimeSinceStartup - this.m_lastUsedTime < this.InternalCooldown)
+            item.quality = PickupObject.ItemQuality.A;
+            CustomSynergies.Add("Radical!", new List<string>
             {
-                return;
-            }
-            this.m_lastUsedTime = Time.realtimeSinceStartup;
-            usingPlayer.CurrentRoom.ApplyActionToNearbyEnemies(usingPlayer.transform.position.XY(), 20f, this.ProcessEnemy);
+                "bb:showoff_bullets"
+            }, new List<string>
+            {
+                "rad_gun",
+                "sunglasses"
+            }, true);
+            CustomSynergies.Add("Flashy", new List<string>
+            {
+                "bb:showoff_bullets"
+            }, new List<string>
+            {
+                "camera"
+            }, true);
         }
-        private void ProcessEnemy(AIActor a, float distance)
+        public void PostProcessProjectile(Projectile proj, float f)
         {
-            if (a && a.IsNormalEnemy && a.healthHaver && !a.IsGone)
+            HomingModifier homingModifier = proj.gameObject.GetComponent<HomingModifier>();
+            if (homingModifier == null)
             {
-                a.ApplyEffect(GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultPermanentCharmEffect, 1f, null);
-                a.IgnoreForRoomClear = true;
+                homingModifier = proj.gameObject.AddComponent<HomingModifier>();
+                homingModifier.HomingRadius = 25;
+                homingModifier.AngularVelocity = 250;
             }
+        }
+        public override void Pickup(PlayerController user)
+        {
+            base.Pickup(user);
+            user.PostProcessProjectile += this.PostProcessProjectile;
         }
         public override DebrisObject Drop(PlayerController player)
         {
-            DebrisObject debrisObject = base.Drop(player);
-            player.OnUsedPlayerItem -= this.DoEffect;
-            this.m_pickedUpThisRun = true;
-            return debrisObject;
+            player.PostProcessProjectile -= this.PostProcessProjectile;
+            return base.Drop(player);
         }
-        public static void BuildPrefab()
+        private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
         {
-            GameObject gameObject = SpriteBuilder.SpriteFromResource("BleakMod/Resources/winchester_hats/winchester_hat_right", null);
-            gameObject.SetActive(false);
-            FakePrefab.MarkAsFakePrefab(gameObject);
-            UnityEngine.Object.DontDestroyOnLoad(gameObject);
-            GameObject gameObject2 = new GameObject("Badaboom");
-            tk2dSprite tk2dSprite = gameObject2.AddComponent<tk2dSprite>();
-            tk2dSprite.SetSprite(gameObject.GetComponent<tk2dBaseSprite>().Collection, gameObject.GetComponent<tk2dBaseSprite>().spriteId);
-            WinchestersHat.spriteIds.Add(SpriteBuilder.AddSpriteToCollection("BleakMod/Resources/winchester_hats/winchester_hat_left", tk2dSprite.Collection));
-            WinchestersHat.spriteIds.Add(SpriteBuilder.AddSpriteToCollection("BleakMod/Resources/winchester_hats/winchester_hat_back", tk2dSprite.Collection));
-            tk2dSprite.GetCurrentSpriteDef().material.shader = ShaderCache.Acquire("Brave/PlayerShader");
-            WinchestersHat.spriteIds.Add(tk2dSprite.spriteId);
-            gameObject2.SetActive(false);
-            tk2dSprite.SetSprite(WinchestersHat.spriteIds[0]);
-            tk2dSprite.GetCurrentSpriteDef().material.shader = ShaderCache.Acquire("Brave/PlayerShader");
-            tk2dSprite.SetSprite(WinchestersHat.spriteIds[1]);
-            tk2dSprite.GetCurrentSpriteDef().material.shader = ShaderCache.Acquire("Brave/PlayerShader");
-            tk2dSprite.SetSprite(WinchestersHat.spriteIds[2]);
-            tk2dSprite.GetCurrentSpriteDef().material.shader = ShaderCache.Acquire("Brave/PlayerShader");
-            FakePrefab.MarkAsFakePrefab(gameObject2);
-            UnityEngine.Object.DontDestroyOnLoad(gameObject2);
-            WinchestersHat.boomprefab = gameObject2;
+            StatModifier modifier = new StatModifier();
+            modifier.amount = amount;
+            modifier.statToBoost = statType;
+            modifier.modifyType = method;
+
+            foreach (var m in passiveStatModifiers)
+            {
+                if (m.statToBoost == statType) return; //don't add duplicates
+            }
+
+            if (this.passiveStatModifiers == null)
+                this.passiveStatModifiers = new StatModifier[] { modifier };
+            else
+                this.passiveStatModifiers = this.passiveStatModifiers.Concat(new StatModifier[] { modifier }).ToArray();
         }
-        private void SpawnVFXAttached()
+        private void RemoveStat(PlayerStats.StatType statType)
         {
-            GameObject boomprefab1 = UnityEngine.Object.Instantiate<GameObject>(WinchestersHat.boomprefab, base.Owner.transform.position + new Vector3(0.3f, 1.05f, -5f), Quaternion.identity);
-            boomprefab1.GetComponent<tk2dBaseSprite>().PlaceAtLocalPositionByAnchor(base.Owner.specRigidbody.UnitCenter, tk2dBaseSprite.Anchor.MiddleCenter);
-            GameManager.Instance.StartCoroutine(this.HandleSprite(boomprefab1));
-            HatObject = boomprefab1;
+            var newModifiers = new List<StatModifier>();
+            for (int i = 0; i < passiveStatModifiers.Length; i++)
+            {
+                if (passiveStatModifiers[i].statToBoost != statType)
+                    newModifiers.Add(passiveStatModifiers[i]);
+            }
+            this.passiveStatModifiers = newModifiers.ToArray();
         }
         protected override void Update()
         {
-            if (base.Owner && !HatObject && base.Owner.CurrentGun.sprite)
-            {
-                this.SpawnVFXAttached();
-            }
-            if (!base.Owner.CurrentGun.sprite && HatObject)
-            {
-                Destroy(HatObject);
-            }
-            if (base.Owner.CurrentGun.PickupObjectId == 251)
-            {
-                base.Owner.CurrentGun.InfiniteAmmo = true;
-            }
             base.Update();
-        }
-        private IEnumerator HandleSprite(GameObject prefab)
-        {
-            while (prefab != null && base.Owner != null)
+            this.currentItems = base.m_owner.passiveItems.Count;
+            if (this.currentItems != this.lastItems)
             {
-                prefab.transform.position = base.Owner.transform.position + new Vector3(0.3f, 1.05f, -5f);
-                if (base.Owner.IsFalling)
+                this.RemoveStat(PlayerStats.StatType.Coolness);
+                if (base.m_owner.HasMTGConsoleID("rad_gun") || base.m_owner.HasMTGConsoleID("sunglasses"))
                 {
-                    prefab.GetComponent<tk2dBaseSprite>().renderer.enabled = false;
+                    this.AddStat(PlayerStats.StatType.Coolness, 3f);
                 }
                 else
                 {
-                    prefab.GetComponent<tk2dBaseSprite>().renderer.enabled = true;
+                    this.AddStat(PlayerStats.StatType.Coolness, 0f);
                 }
-                if (base.Owner.IsBackfacing())
+                if (base.m_owner.HasMTGConsoleID("camera"))
                 {
-                    prefab.GetComponent<tk2dBaseSprite>().SetSprite(WinchestersHat.spriteIds[1]);
+                    this.handleDamage(true);
                 }
-                if (!base.Owner.IsBackfacing() && this.m_owner.CurrentGun.sprite.WorldCenter.x - this.m_owner.specRigidbody.UnitCenter.x < 0f)
+                else
                 {
-                    prefab.GetComponent<tk2dBaseSprite>().SetSprite(WinchestersHat.spriteIds[0]);
+                    this.handleDamage(false);
                 }
-                if (!base.Owner.IsBackfacing() && this.m_owner.CurrentGun.sprite.WorldCenter.x - this.m_owner.specRigidbody.UnitCenter.x > 0f)
-                {
-                    prefab.GetComponent<tk2dBaseSprite>().SetSprite(WinchestersHat.spriteIds[2]);
-                }
-
-                yield return null;
+                this.lastItems = this.currentItems;
             }
-            Destroy(prefab.gameObject);
-            yield break;
         }
-        private static GameObject boomprefab;
-        private GameObject HatObject;
-        public static List<int> spriteIds = new List<int>();
-        public float InternalCooldown;
-        private float m_lastUsedTime;
+        private void handleDamage(bool hasSynergy)
+        {
+            this.RemoveStat(PlayerStats.StatType.Damage);
+            if (hasSynergy)
+            {
+                this.AddStat(PlayerStats.StatType.Damage, 0.1f);
+            }
+            else
+            {
+                this.AddStat(PlayerStats.StatType.Damage, -0.1f);
+            }
+            base.m_owner.stats.RecalculateStats(base.m_owner, true, false);
+        }
+        public int currentItems;
+        public int lastItems;
     }
 }
