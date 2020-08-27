@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -228,7 +228,14 @@ namespace BleakMod
 			//Set the rarity of the item
 			item.quality = PickupObject.ItemQuality.A;
 			item.AddToSubShop(ItemBuilder.ShopType.Cursula, 1f);
-        }
+			CustomSynergies.Add("Soulless", new List<string>
+			{
+				"bb:life_cube"
+			}, new List<string>
+			{
+				"life_orb",
+			}, true);
+		}
         protected override void Update()
         {
             base.Update();
@@ -236,6 +243,14 @@ namespace BleakMod
             {
 				base.Owner.CurrentGun.gameObject.AddComponent<BleakOrbGunModifier>();
             }
+			if (base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction != 1f)
+			{
+				base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction = 1f;
+			}
+			else if (!base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction == 1f)
+            {
+				base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction = 0.5f;
+			}
         }
     }
 }
