@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,7 +29,7 @@ namespace BleakMod
 
             //Ammonomicon entry variables
             string shortDesc = "Teamwork makes the dream work";
-            string longDesc = "Gives you strength for every companion fight alongside you.\n\n" +
+            string longDesc = "Gives you strength for every companion that fights alongside you.\n\n" +
                 "So this is that \"power of friendship\" you see all the time in movies.";
 
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
@@ -40,6 +40,16 @@ namespace BleakMod
 
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.C;
+            CustomSynergies.Add("Power Of Friendship", new List<string>
+            {
+                "bb:friendship_bracelet"
+            }, new List<string>
+            {
+                "potion_of_gun_friendship",
+                "ring_of_chest_friendship",
+                "ring_of_mimic_friendship",
+                "space_friend"
+            }, true);
         }
         public override void Pickup(PlayerController player)
         {
@@ -63,11 +73,26 @@ namespace BleakMod
         {
             this.currentCompanions = 0;
             damageBoost = 0;
-            foreach(int item in ListOfCompanions)
+            if (player.HasMTGConsoleID("potion_of_gun_friendship") || player.HasMTGConsoleID("ring_of_chest_friendship") || player.HasMTGConsoleID("ring_of_mimic_friendship") || player.HasMTGConsoleID("space_friend"))
             {
-                if (player.HasPickupID(item)){
-                    this.currentCompanions += 1;
-                    damageBoost += 0.2f;
+                foreach (int item in ListOfCompanions)
+                {
+                    if (player.HasPickupID(item))
+                    {
+                        this.currentCompanions += 1;
+                        damageBoost += 0.4f;
+                    }
+                }
+            }
+            else
+            {
+                foreach (int item in ListOfCompanions)
+                {
+                    if (player.HasPickupID(item))
+                    {
+                        this.currentCompanions += 1;
+                        damageBoost += 0.2f;
+                    }
                 }
             }
             this.shouldRestat = this.currentCompanions != this.lastCompanions;
