@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
@@ -46,7 +46,19 @@ namespace BleakMod
             item.quality = PickupObject.ItemQuality.D;
             item.AddToSubShop(ItemBuilder.ShopType.Cursula, 1f);
             item.AddToSubShop(ItemBuilder.ShopType.Goopton, 1f);
-            item.PreventStartingOwnerFromDropping = true;
+            CustomSynergies.Add("Ooey Gooey", new List<string>
+            {
+                "bb:strawberry_jam"
+            }, new List<string>
+            {
+                "shotga_cola",
+                "shotgun_coffee",
+                "double_vision",
+                "potion_of_gun_friendship",
+                "potion_of_lead_skin",
+                "old_knights_flask",
+                "orange"
+            }, true);
         }
         public override void Pickup(PlayerController player)
         {
@@ -83,6 +95,14 @@ namespace BleakMod
         }
         private void OnNewEnemyAppeared(AIActor aiactor)
         {
+            if(this.Owner.HasMTGConsoleID("shotga_cola") || this.Owner.HasMTGConsoleID("shotgun_coffee") || this.Owner.HasMTGConsoleID("double_vision") || this.Owner.HasMTGConsoleID("potion_of_gun_friendship") || this.Owner.HasMTGConsoleID("potion_of_lead_skin") || this.Owner.HasMTGConsoleID("old_knight's_flask") || this.Owner.HasMTGConsoleID("Orange"))
+            {
+                this.charmChance = 1f;
+            }
+            else
+            {
+                this.charmChance = 0.75f;
+            }
             if(aiactor != null && aiactor.IsBlackPhantom && UnityEngine.Random.value <= this.charmChance)
             {
                 aiactor.ApplyEffect(GameManager.Instance.Dungeon.sharedSettingsPrefab.DefaultPermanentCharmEffect, 1f, null);
@@ -118,7 +138,6 @@ namespace BleakMod
 		    {
 			    enemy.EraseFromExistence(false);
 		    }
-            ETGModConsole.Log("An enemy has been destroyed.");
 	    }
         public override DebrisObject Drop(PlayerController player)
         {
@@ -127,7 +146,7 @@ namespace BleakMod
             debrisObject.GetComponent<StrawberryJam>().m_pickedUpThisRun = true;
             return debrisObject;
         }
-        public float charmChance = 0.75f;
+        public float charmChance;
         public List<AIActor> affectedEnemies = new List<AIActor>();
         YellowChamberItem yellowchamber = new YellowChamberItem();
         public GameObject TelefragVFXPrefab;
