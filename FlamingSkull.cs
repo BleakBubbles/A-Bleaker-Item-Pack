@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +38,17 @@ namespace BleakMod
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
             item.quality = PickupObject.ItemQuality.D;
             item.AddToSubShop(ItemBuilder.ShopType.Cursula, 1f);
+            CustomSynergies.Add("Great Skulls of Fire", new List<string>
+            {
+                "bb:flaming_skull"
+            }, new List<string>
+            {
+                "pitchfork",
+                "demon_head",
+                "flame_hand",
+                "gunner",
+                "skull_spitter"
+            }, true);
         }
         public override void Pickup(PlayerController player)
         {
@@ -60,6 +71,8 @@ namespace BleakMod
                 this.AddStat(PlayerStats.StatType.Curse, newCurse);
                 player.stats.RecalculateStats(this.m_owner, true, false);
             }
+            this.synergizedCurse = (int)(this.newCurse / 2);
+            this.origCurse = this.newCurse;
             this.curseToAdd = 2 * this.newCurse;
             this.initiatedCurse = true;
         }
@@ -103,6 +116,14 @@ namespace BleakMod
             {
                 base.Update();
                 this.curse = this.m_owner.stats.GetStatValue(PlayerStats.StatType.Curse);
+                if((this.m_owner.HasMTGConsoleID("pitchfork") || this.m_owner.HasMTGConsoleID("demon_head") || this.m_owner.HasMTGConsoleID("flame_hand") || this.m_owner.HasMTGConsoleID("gunner") || this.m_owner.HasMTGConsoleID("skull_spitter")) && this.newCurse != this.synergizedCurse)
+                {
+                    this.newCurse = this.synergizedCurse;
+                }
+                else if(!(this.m_owner.HasMTGConsoleID("pitchfork") || this.m_owner.HasMTGConsoleID("demon_head") || this.m_owner.HasMTGConsoleID("flame_hand") || this.m_owner.HasMTGConsoleID("gunner") || this.m_owner.HasMTGConsoleID("skull_spitter")) && this.newCurse != this.origCurse)
+                {
+                    this.newCurse = this.origCurse;
+                }
                 if (this.curse != this.newCurse && this.initiatedCurse)
                 {
                     this.curseToAdd = 2 * this.newCurse;
@@ -111,6 +132,7 @@ namespace BleakMod
                     this.RemoveStat(PlayerStats.StatType.Curse);
                     this.m_owner.stats.SetBaseStatValue(PlayerStats.StatType.Curse, curseToAdd, this.m_owner);
                     this.curseToChange += this.curse - this.newCurse;
+                    ETGModConsole.Log("The player has " + this.m_owner.stats.GetStatValue(PlayerStats.StatType.Curse) + " curse.");
                 }
             }
         }
@@ -118,6 +140,8 @@ namespace BleakMod
         private float curseToChange = 0;
         private float curse;
         private float newCurse;
+        private float origCurse;
+        private float synergizedCurse;
         private float curseToAdd;
         private DamageTypeModifier m_fireImmunity;
     }
