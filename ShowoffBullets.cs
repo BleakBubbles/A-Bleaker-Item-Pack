@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,13 +36,27 @@ namespace BleakMod
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
 
             //Adds the actual passive effect to the item
-            item.AddPassiveStatModifier(PlayerStats.StatType.Damage, -0.15f, StatModifier.ModifyMethod.ADDITIVE);
             item.AddPassiveStatModifier(PlayerStats.StatType.AdditionalShotPiercing, 1f, StatModifier.ModifyMethod.ADDITIVE);
             item.AddPassiveStatModifier(PlayerStats.StatType.AdditionalShotBounces, 2f, StatModifier.ModifyMethod.ADDITIVE);
             item.AddPassiveStatModifier(PlayerStats.StatType.ProjectileSpeed, 0.5f, StatModifier.ModifyMethod.ADDITIVE);
 
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.A;
+            CustomSynergies.Add("Radical!", new List<string>
+            {
+                "bb:showoff_bullets"
+            }, new List<string>
+            {
+                "rad_gun",
+                "sunglasses"
+            }, true);
+            CustomSynergies.Add("Flashy", new List<string>
+            {
+                "bb:showoff_bullets"
+            }, new List<string>
+            {
+                "camera"
+            }, true);
         }
         public void PostProcessProjectile(Projectile proj, float f)
         {
@@ -64,5 +78,73 @@ namespace BleakMod
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
         }
+        private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
+        {
+            StatModifier modifier = new StatModifier();
+            modifier.amount = amount;
+            modifier.statToBoost = statType;
+            modifier.modifyType = method;
+
+            foreach (var m in passiveStatModifiers)
+            {
+                if (m.statToBoost == statType) return; //don't add duplicates
+            }
+
+            if (this.passiveStatModifiers == null)
+                this.passiveStatModifiers = new StatModifier[] { modifier };
+            else
+                this.passiveStatModifiers = this.passiveStatModifiers.Concat(new StatModifier[] { modifier }).ToArray();
+        }
+        private void RemoveStat(PlayerStats.StatType statType)
+        {
+            var newModifiers = new List<StatModifier>();
+            for (int i = 0; i < passiveStatModifiers.Length; i++)
+            {
+                if (passiveStatModifiers[i].statToBoost != statType)
+                    newModifiers.Add(passiveStatModifiers[i]);
+            }
+            this.passiveStatModifiers = newModifiers.ToArray();
+        }
+        protected override void Update()
+        {
+            base.Update();
+            this.currentItems = base.m_owner.passiveItems.Count;
+            if (this.currentItems != this.lastItems)
+            {
+                this.RemoveStat(PlayerStats.StatType.Coolness);
+                if (base.m_owner.HasMTGConsoleID("rad_gun") || base.m_owner.HasMTGConsoleID("sunglasses"))
+                {
+                    this.AddStat(PlayerStats.StatType.Coolness, 3f);
+                }
+                else
+                {
+                    this.AddStat(PlayerStats.StatType.Coolness, 0f);
+                }
+                if (base.m_owner.HasMTGConsoleID("camera"))
+                {
+                    this.handleDamage(true);
+                }
+                else
+                {
+                    this.handleDamage(false);
+                }
+                this.lastItems = this.currentItems;
+            }
+        }
+        private void handleDamage(bool hasSynergy)
+        {
+            this.RemoveStat(PlayerStats.StatType.Damage);
+            if (hasSynergy)
+            {
+                this.AddStat(PlayerStats.StatType.Damage, 0.1f);
+            }
+            else
+            {
+                this.AddStat(PlayerStats.StatType.Damage, -0.1f);
+            }
+            base.m_owner.stats.RecalculateStats(base.m_owner, true, false);
+        }
+        public int currentItems;
+        public int lastItems;
     }
 }
