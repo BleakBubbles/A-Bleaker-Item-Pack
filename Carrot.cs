@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -41,8 +41,72 @@ namespace BleakMod
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.A;
             item.AddPassiveStatModifier(PlayerStats.StatType.ProjectileSpeed, 0.33f, StatModifier.ModifyMethod.ADDITIVE);
-            item.AddPassiveStatModifier(PlayerStats.StatType.Damage, 0.10f, StatModifier.ModifyMethod.ADDITIVE);
             item.AddPassiveStatModifier(PlayerStats.StatType.RangeMultiplier, 1.33f, StatModifier.ModifyMethod.MULTIPLICATIVE);
+            CustomSynergies.Add("Eat Your Veggies", new List<string>
+            {
+                "bb:carrot"
+            }, new List<string>
+            {
+                "broccoli",
+                "blasphemy_alt"
+            }, true);
+        }
+        private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
+        {
+            StatModifier modifier = new StatModifier();
+            modifier.amount = amount;
+            modifier.statToBoost = statType;
+            modifier.modifyType = method;
+
+            foreach (var m in passiveStatModifiers)
+            {
+                if (m.statToBoost == statType) return; //don't add duplicates
+            }
+
+            if (this.passiveStatModifiers == null)
+                this.passiveStatModifiers = new StatModifier[] { modifier };
+            else
+                this.passiveStatModifiers = this.passiveStatModifiers.Concat(new StatModifier[] { modifier }).ToArray();
+        }
+        private void RemoveStat(PlayerStats.StatType statType)
+        {
+            var newModifiers = new List<StatModifier>();
+            for (int i = 0; i < passiveStatModifiers.Length; i++)
+            {
+                if (passiveStatModifiers[i].statToBoost != statType)
+                    newModifiers.Add(passiveStatModifiers[i]);
+            }
+            this.passiveStatModifiers = newModifiers.ToArray();
+        }
+        protected override void Update()
+        {
+            base.Update();
+            this.currentItems = base.m_owner.passiveItems.Count;
+            if (this.currentItems != this.lastItems)
+            {
+                if (base.m_owner.HasMTGConsoleID("broccoli") || base.m_owner.HasMTGConsoleID("blasphemy_alt"))
+                {
+                    this.handleDamage(true);
+                }
+                else
+                {
+                    this.handleDamage(false);
+                }
+                this.lastItems = this.currentItems;
+            }
+        }
+        private void handleDamage(bool hasSynergy)
+        {
+            this.RemoveStat(PlayerStats.StatType.Damage);
+            if (hasSynergy)
+            {
+                this.AddStat(PlayerStats.StatType.Damage, 0.33f);
+            }
+            else
+            {
+                this.AddStat(PlayerStats.StatType.Damage, 0.1f);
+            }
+            base.m_owner.stats.RecalculateStats(base.m_owner, true, false);
         }
         public override void Pickup(PlayerController player)
         {
@@ -56,5 +120,7 @@ namespace BleakMod
             debrisObject.GetComponent<Carrot>().m_pickedUpThisRun = true;
             return debrisObject;
         }
+        public int currentItems;
+        public int lastItems;
     }
 }
