@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +6,12 @@ using UnityEngine;
 using ItemAPI;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
+using MultiplayerBasicExample;
 
 namespace BleakMod
 {
     public class Bleaker: PassiveItem
-    {   
+    {
         //Call this method from the Start() method of your ETGModule extension
         public static void Register()
         {
@@ -61,6 +62,15 @@ namespace BleakMod
                 Bleaker.goopDefs.Add(goopDefinition);
             }
             Bleaker.goopDefs.Add(Bleaker.cheeseGoop);
+            CustomSynergies.Add("For Science", new List<string>
+            {
+                "bb:bleaker"
+            }, new List<string>
+            {
+                "science_cannon",
+                "hot_lead",
+                "irradiated_lead"
+            }, true);
         }
         private void OnEnemyKilled(PlayerController player, HealthHaver enemy)
         {
@@ -147,6 +157,21 @@ namespace BleakMod
                     homingModifier = proj.gameObject.AddComponent<HomingModifier>();
                     homingModifier.HomingRadius = 15;
                     homingModifier.AngularVelocity = 100;
+                }
+            }
+            if (base.Owner.HasMTGConsoleID("science_cannon") || base.Owner.HasMTGConsoleID("hot_lead") || base.Owner.HasMTGConsoleID("irradiated_lead") || this.Owner.HasMTGConsoleID("chaos_bullets"))
+            {
+                bool flag2 = this.goop == goopDefs[0];
+                if (flag2)
+                {
+                    proj.statusEffectsToApply.Add(this.FireModifierEffect);
+                    proj.AdjustPlayerProjectileTint(Color.red, 5, 0f);
+                }
+                bool flag3 = this.goop == goopDefs[1];
+                if (flag3)
+                {
+                    proj.statusEffectsToApply.Add(this.HealthModifierEffect);
+                    proj.AdjustPlayerProjectileTint(Color.green, 5, 0f);
                 }
             }
         }
@@ -246,5 +271,7 @@ namespace BleakMod
         GoopDefinition goop;
         GoopDefinition goopLast = goopDefs[-1];
         public static GoopDefinition cheeseGoop = (PickupObjectDatabase.GetById(626) as Gun).DefaultModule.projectiles[0].cheeseEffect.CheeseGoop;
+        public GameActorFireEffect FireModifierEffect;
+        public GameActorHealthEffect HealthModifierEffect;
     }
 }
