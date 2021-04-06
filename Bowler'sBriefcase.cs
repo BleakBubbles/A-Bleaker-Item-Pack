@@ -46,6 +46,7 @@ namespace BleakMod
             item.consumable = true;
             item.numberOfUses = 5;
             item.quality = ItemQuality.A;
+            item.AddToSubShop(ItemBuilder.ShopType.Flynt, 1f);
 
             Material material = new Material(ShaderCache.Acquire("Brave/Internal/RainbowChestShader"));
             material.SetFloat("_AllColorsToggle", 1f);

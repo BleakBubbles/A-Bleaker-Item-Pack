@@ -90,7 +90,6 @@ namespace BleakMod
         {
             this.m_pickedUp = true;
             UnityEngine.Object.Destroy(base.gameObject, 1f);
-
         }
         public override void Pickup(PlayerController player)
         {

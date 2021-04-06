@@ -30,7 +30,7 @@ namespace BleakMod
 
             //Ammonomicon entry variables
             string shortDesc = "Activate Instant Kill";
-            string longDesc = "3 uses. On each use, compresses a whole clip's worth of bullets into a single shot in your current gun.\nThe term overkill is not in your dictionary. Overkill? What overkill?\n\nNote: Using overpill will make your current gun undroppable.";
+            string longDesc = "5 uses. On each use, compresses a whole clip's worth of bullets into a single shot in your current gun.\nThe term overkill is not in your dictionary. Overkill? What overkill?\n\nNote: Using overpill will make your current gun undroppable.";
 
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
@@ -40,7 +40,7 @@ namespace BleakMod
             //Adds a passive modifier, like curse, coolness, damage, etc. to the item. Works for passives and actives.
             //Set some other fields
             item.consumable = true;
-            item.numberOfUses = 3;
+            item.numberOfUses = 5;
             item.quality = ItemQuality.S;
         }
         public void PostProcessProjectile(Projectile proj, float f)
@@ -63,6 +63,11 @@ namespace BleakMod
         {
             user.PostProcessProjectile -= this.PostProcessProjectile;
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            base.LastOwner.PostProcessProjectile -= this.PostProcessProjectile;
+        }
         protected override void DoEffect(PlayerController user) 
         {
             Gun gun = user.CurrentGun;
@@ -75,6 +80,21 @@ namespace BleakMod
             gun.AdditionalClipCapacity = -gun.ClipCapacity + 1;
             this.affectedGuns.Add(gun);
             user.stats.RecalculateStats(user, true, false);
+        }
+        public override void Update()
+        {
+            base.Update();
+            if (this.LastOwner)
+            {
+                foreach(Gun gun in this.affectedGuns)
+                {
+                    if(gun.PickupObjectId == base.LastOwner.CurrentGun.PickupObjectId && base.LastOwner.CurrentGun.ClipCapacity != 1)
+                    {
+                        base.LastOwner.CurrentGun.ClipShotsRemaining = 1;
+                    }
+                }
+            }
+            
         }
         //Disable or enable the active whenever you need!
         public override bool CanBeUsed(PlayerController user)   

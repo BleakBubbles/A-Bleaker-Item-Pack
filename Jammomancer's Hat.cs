@@ -10,6 +10,7 @@ using AnimationType = ItemAPI.CompanionBuilder.AnimationType;
 using MultiplayerBasicExample;
 using System.Timers;
 using HutongGames.PlayMaker.Actions;
+using HutongGames;
 
 namespace BleakMod
 {
@@ -35,14 +36,16 @@ namespace BleakMod
             item.quality = PickupObject.ItemQuality.C;
             item.CompanionGuid = guid; //this will be used by the item later to pull your companion from the enemy database
             item.Synergies = new CompanionTransformSynergy[0]; //this just needs to not be null
-            item.AddPassiveStatModifier(PlayerStats.StatType.Damage, 0.15f, StatModifier.ModifyMethod.ADDITIVE);
+            item.AddPassiveStatModifier(PlayerStats.StatType.Damage, 0.2f, StatModifier.ModifyMethod.ADDITIVE);
             item.AddPassiveStatModifier(PlayerStats.StatType.MovementSpeed, 1.5f, StatModifier.ModifyMethod.ADDITIVE);
+            item.AddPassiveStatModifier(PlayerStats.StatType.Curse, 1f, StatModifier.ModifyMethod.ADDITIVE);
+            item.AddToSubShop(ItemBuilder.ShopType.Cursula, 1f);
             BuildPrefab();
             BuildPrefab2();
         }
         private void PostProcessProjectile(Projectile proj, float f)
         {
-            if(proj.sprite != null)
+            if(proj.sprite != null && !proj.TreatedAsNonProjectileForChallenge)
             {
                 proj.sprite.usesOverrideMaterial = true;
                 proj.sprite.renderer.material.SetFloat("_BlackBullet", 1f);
@@ -114,7 +117,7 @@ namespace BleakMod
         }
         protected override void Update()
         {
-            if (base.Owner && !HatObject && base.Owner.CurrentGun.sprite)
+            if (base.Owner && !HatObject && base.Owner.CurrentGun.sprite && Time.frameCount % 10 == 0)
             {
                 this.SpawnVFXAttached();
             }
@@ -167,5 +170,6 @@ namespace BleakMod
         private GameObject HatObject;
         public static List<int> spriteIds = new List<int>();
         public float elapsed;
+
     }
 }

@@ -43,7 +43,7 @@ namespace BleakMod
             //Adds a passive modifier, like curse, coolness, damage, etc. to the item. Works for passives and actives.
             //Set some other fields
             item.consumable = false;
-            item.quality = ItemQuality.A;
+            item.quality = ItemQuality.S;
         }
         public void PostProcessProjectile(Projectile proj, float f)
         {
@@ -104,7 +104,7 @@ namespace BleakMod
             base.Update();
             if (m_isCurrentlyActive && this.LastOwner != null)
             {
-                bool flag = base.LastOwner.CurrentRoom != null && base.LastOwner;
+                bool flag = base.LastOwner.CurrentRoom != null && base.LastOwner && base.LastOwner.IsInCombat;
                 if (flag)
                 {
                     List<AIActor> activeEnemies = base.LastOwner.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All);

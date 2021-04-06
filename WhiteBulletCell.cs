@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 using ItemAPI;
+using Dungeonator;
 
 namespace BleakMod
 {
@@ -43,11 +44,14 @@ namespace BleakMod
         }
         public void PostProcessProjectile(Projectile proj, float f)
         {
-            proj.OnHitEnemy += this.OnHitEnemy;
+            if (!proj.TreatedAsNonProjectileForChallenge)
+            {
+                proj.OnHitEnemy += this.OnHitEnemy;
+            }
         }
         private void OnHitEnemy(Projectile proj, SpeculativeRigidbody enemy, bool fatal)
         {
-            if(!fatal && this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
+            if(!fatal && enemy.aiActor.healthHaver && enemy.aiActor.EnemyGuid != null && this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
             {
                 enemy.aiActor.healthHaver.ApplyDamage((proj.baseData.damage / 10) * this.affectedEnemies[enemy.aiActor.EnemyGuid], Vector2.zero, this.Owner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
             }

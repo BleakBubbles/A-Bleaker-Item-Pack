@@ -57,7 +57,7 @@ namespace BleakMod
                 this.vulnEnemies = this.activeEnemies.Count;
                 foreach (AIActor enemy in this.activeEnemies)
                 {
-                    if (!enemy.healthHaver.IsVulnerable)
+                    if (!enemy.healthHaver.IsVulnerable || !enemy.healthHaver.CanCurrentlyBeKilled)
                     {
                         this.vulnEnemies -= 1;
                     }

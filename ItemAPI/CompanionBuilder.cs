@@ -146,7 +146,7 @@ namespace ItemAPI
             if (!collection)
                 collection = SpriteBuilder.ConstructCollection(aiAnimator.gameObject, $"{aiAnimator.name}_collection");
 
-            string[] resources = ResourceExtractor.GetResourceNames();
+            string[] resources = ItemAPI.ResourceExtractor.GetResourceNames();
             List<int> indices = new List<int>();
             for (int i = 0; i < resources.Length; i++)
             {

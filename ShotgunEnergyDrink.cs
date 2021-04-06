@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +36,7 @@ namespace BleakMod
             //"kts" here is the item pool. In the console you'd type kts:sweating_bullets
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
             //Set the cooldown type and duration of the cooldown
-            ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Damage, 150);
+            ItemBuilder.SetCooldownType(item, ItemBuilder.CooldownType.Timed, 15f);
             //Adds a passive modifier, like curse, coolness, damage, etc. to the item. Works for passives and actives.
             //Set some other fields
             item.consumable = false;
@@ -160,7 +160,7 @@ namespace BleakMod
         private StatModifier movementSpeedMod;
         private StatModifier dodgeRollSpeedMod;
 
-        private float duration = 20f;
+        private float duration = 15f;
         private int TimesUsed;
     }
 }

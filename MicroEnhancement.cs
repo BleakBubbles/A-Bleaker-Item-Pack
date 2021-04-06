@@ -48,19 +48,11 @@ namespace BleakMod
         {
             if (this.LastOwner)
             {
-                this.numCompanions = 0;
-                foreach (int i in this.ListOfCompanions)
-                {
-                    if (base.LastOwner.HasPickupID(i))
-                    {
-                        this.numCompanions += 1;
-                    }
-                }
-                if (this.numCompanions > 0)
+                if (this.LastOwner.companions.Count > 0 && this.hasCompanions != true)
                 {
                     this.hasCompanions = true;
                 }
-                else
+                else if (this.LastOwner.companions.Count == 0 && this.hasCompanions != false)
                 {
                     this.hasCompanions = false;
                 }
@@ -108,27 +100,6 @@ namespace BleakMod
         }
         
         public float duration = 10f;
-        public List<int> ListOfCompanions = new List<int>
-        {
-            818,
-            249,
-            442,
-            461,
-            451,
-            491,
-            318,
-            580,
-            664,
-            572,
-            607,
-            232,
-            301,
-            492,
-            632,
-            645,
-            300
-        };
         public bool hasCompanions;
-        public int numCompanions;
     }
 }

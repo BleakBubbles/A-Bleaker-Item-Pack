@@ -15,7 +15,7 @@ namespace BleakMod
         public static void Register()
         {
             //The name of the item
-            string itemName = "Repurposed Shel Casing";
+            string itemName = "Repurposed Shell Casing";
 
             //Refers to an embedded png in the project. Make sure to embed your resources! Google it
             string resourceName = "BleakMod/Resources/repurposed_shell_casing";

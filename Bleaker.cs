@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,7 +75,7 @@ namespace BleakMod
         private void OnEnemyKilled(PlayerController player, HealthHaver enemy)
         {
             bool flag = enemy.specRigidbody != null && enemy.aiActor != null && base.Owner != null;
-            if (flag)
+            if (flag && UnityEngine.Random.value <= 0.66f)
             {
                 PickupObject byId = PickupObjectDatabase.GetById(310);
                 bool flag2 = byId == null;
@@ -94,62 +94,61 @@ namespace BleakMod
             if (this.m_owner)
             {
                 this.goopBoost();
-                for (int i = 0; i < StaticReferenceManager.AllGoops.Count; i++)
-                {
-                    StaticReferenceManager.AllGoops[i].ElectrifyGoopCircle(this.m_owner.specRigidbody.UnitBottomCenter, 5f);
-                }
             }
         }
         private void goopBoost()
         {
-            Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(base.Owner.sprite);
-            goop = base.m_owner.CurrentGoop;
-            bool flag1 = this.goop == this.goopLast;
-            if (!flag1)
+            if (base.Owner)
             {
-                this.RemoveStat(PlayerStats.StatType.Damage);
-                this.RemoveStat(PlayerStats.StatType.RateOfFire);
-                this.RemoveStat(PlayerStats.StatType.ReloadSpeed);
-                this.RemoveStat(PlayerStats.StatType.AdditionalShotPiercing);
-                this.RemoveStat(PlayerStats.StatType.EnemyProjectileSpeedMultiplier);
-                this.DisableVFX(base.Owner);
-                bool flag2 = this.goop == goopDefs[0];
-                if (flag2)
+                Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(base.Owner.sprite);
+                this.goop = base.m_owner.CurrentGoop;
+                bool flag1 = this.goop == this.goopLast;
+                if (!flag1)
                 {
-                    this.AddStat(PlayerStats.StatType.Damage, 1.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
-                    outlineMaterial.SetColor("_OverrideColor", new Color(255f, 0f, 0f, 50f));
+                    this.RemoveStat(PlayerStats.StatType.Damage);
+                    this.RemoveStat(PlayerStats.StatType.RateOfFire);
+                    this.RemoveStat(PlayerStats.StatType.ReloadSpeed);
+                    this.RemoveStat(PlayerStats.StatType.AdditionalShotPiercing);
+                    this.RemoveStat(PlayerStats.StatType.EnemyProjectileSpeedMultiplier);
+                    this.DisableVFX(base.Owner);
+                    bool flag2 = this.goop == goopDefs[0];
+                    if (flag2)
+                    {
+                        this.AddStat(PlayerStats.StatType.Damage, 1.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
+                        outlineMaterial.SetColor("_OverrideColor", new Color(255f, 0f, 0f, 50f));
+                    }
+                    bool flag3 = this.goop == goopDefs[1];
+                    if (flag3)
+                    {
+                        this.AddStat(PlayerStats.StatType.ReloadSpeed, 0.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
+                        outlineMaterial.SetColor("_OverrideColor", new Color(0f, 128f, 0f, 50f));
+                    }
+                    bool flag4 = this.goop == goopDefs[2];
+                    if (flag4)
+                    {
+                        this.AddStat(PlayerStats.StatType.RateOfFire, 1.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
+                        outlineMaterial.SetColor("_OverrideColor", new Color(0f, 0f, 255f, 50f));
+                    }
+                    bool flag5 = this.goop == goopDefs[3];
+                    if (flag5)
+                    {
+                        this.AddStat(PlayerStats.StatType.AdditionalShotPiercing, 1f, StatModifier.ModifyMethod.ADDITIVE);
+                        outlineMaterial.SetColor("_OverrideColor", new Color32(212, 58, 58, 255));
+                    }
+                    bool flag6 = this.goop == goopDefs[4];
+                    if (flag6)
+                    {
+                        this.AddStat(PlayerStats.StatType.EnemyProjectileSpeedMultiplier, 0.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
+                        outlineMaterial.SetColor("_OverrideColor", new Color(255f, 255f, 0f, 50f));
+                    }
+                    base.Owner.stats.RecalculateStats(base.Owner, true, false);
+                    this.goopLast = this.goop;
                 }
-                bool flag3 = this.goop == goopDefs[1];
-                if (flag3)
-                {
-                    this.AddStat(PlayerStats.StatType.ReloadSpeed, 0.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
-                    outlineMaterial.SetColor("_OverrideColor", new Color(0f, 128f, 0f, 50f));
-                }
-                bool flag4 = this.goop == goopDefs[2];
-                if (flag4)
-                {
-                    this.AddStat(PlayerStats.StatType.RateOfFire, 1.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
-                    outlineMaterial.SetColor("_OverrideColor", new Color(0f, 0f, 255f, 50f));
-                }
-                bool flag5 = this.goop == goopDefs[3];
-                if (flag5)
-                {
-                    this.AddStat(PlayerStats.StatType.AdditionalShotPiercing, 1f, StatModifier.ModifyMethod.ADDITIVE);
-                    outlineMaterial.SetColor("_OverrideColor", new Color32(212, 58, 58, 255));
-                }
-                bool flag6 = this.goop == goopDefs[4];
-                if (flag6)
-                {
-                    this.AddStat(PlayerStats.StatType.EnemyProjectileSpeedMultiplier, 0.5f, StatModifier.ModifyMethod.MULTIPLICATIVE);
-                    outlineMaterial.SetColor("_OverrideColor", new Color(255f, 255f, 0f, 50f));
-                }
-                base.Owner.stats.RecalculateStats(base.Owner, true, false);
-                this.goopLast = this.goop;
             }
         }
         private void PostProcessProjectile(Projectile proj, float f)
         {
-            if (base.m_owner.CurrentGoop == goopDefs[3])
+            if (base.m_owner.CurrentGoop && base.m_owner.CurrentGoop == goopDefs[3])
             {
                 HomingModifier homingModifier = proj.gameObject.GetComponent<HomingModifier>();
                 if (homingModifier == null)
@@ -218,8 +217,11 @@ namespace BleakMod
         }
         private void DisableVFX(PlayerController user)
         {
-            Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(user.sprite);
-            outlineMaterial.SetColor("_OverrideColor", new Color(0f, 0f, 0f));
+            if (user)
+            {
+                Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(user.sprite);
+                outlineMaterial.SetColor("_OverrideColor", new Color(0f, 0f, 0f));
+            }
         }
         public override void Pickup(PlayerController player)
         {
@@ -266,10 +268,10 @@ namespace BleakMod
             "assets/data/goops/poison goop.asset",
             "assets/data/goops/water goop.asset",
             "assets/data/goops/blobulongoop.asset",
-    };
+        };
         public static List<GoopDefinition> goopDefs;
         GoopDefinition goop;
-        GoopDefinition goopLast = goopDefs[-1];
+        GoopDefinition goopLast;
         public static GoopDefinition cheeseGoop = (PickupObjectDatabase.GetById(626) as Gun).DefaultModule.projectiles[0].cheeseEffect.CheeseGoop;
         public GameActorFireEffect FireModifierEffect;
         public GameActorHealthEffect HealthModifierEffect;

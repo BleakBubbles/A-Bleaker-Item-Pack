@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -112,7 +112,6 @@ namespace BleakMod
 				this.OnKilledEnemyVFX = null;
 				this.OnBurstGunVFX  = null;
 				this.OnBurstDamageVFX = null;
-				ETGModConsole.Log("Player has dropped the item." + this.OnBurstDamageVFX);
 			}
 		}
 
@@ -243,11 +242,11 @@ namespace BleakMod
             {
 				base.Owner.CurrentGun.gameObject.AddComponent<BleakOrbGunModifier>();
             }
-			if (base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction != 1f)
+			if (base.Owner && base.Owner.CurrentGun && base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>() && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>() != null && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction != 1f)
 			{
 				base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction = 1f;
 			}
-			else if (!base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction == 1f)
+			else if (base.Owner && base.Owner.CurrentGun && !base.Owner.HasMTGConsoleID("life_orb") && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>() && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>() != null && base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction == 1f)
             {
 				base.Owner.CurrentGun.gameObject.GetComponent<BleakOrbGunModifier>().damageFraction = 0.5f;
 			}

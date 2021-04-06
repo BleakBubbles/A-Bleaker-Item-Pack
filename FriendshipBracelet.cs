@@ -1,4 +1,4 @@
-using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -71,29 +71,14 @@ namespace BleakMod
         }
         private void EvaluateStats(PlayerController player, bool force = false)
         {
-            this.currentCompanions = 0;
-            damageBoost = 0;
+            this.currentCompanions = player.companions.Count;
             if (player.HasMTGConsoleID("potion_of_gun_friendship") || player.HasMTGConsoleID("ring_of_chest_friendship") || player.HasMTGConsoleID("ring_of_mimic_friendship") || player.HasMTGConsoleID("space_friend"))
             {
-                foreach (int item in ListOfCompanions)
-                {
-                    if (player.HasPickupID(item))
-                    {
-                        this.currentCompanions += 1;
-                        damageBoost += 0.4f;
-                    }
-                }
+                damageBoost = 0.4f * player.companions.Count;
             }
             else
             {
-                foreach (int item in ListOfCompanions)
-                {
-                    if (player.HasPickupID(item))
-                    {
-                        this.currentCompanions += 1;
-                        damageBoost += 0.2f;
-                    }
-                }
+                damageBoost = 0.2f * player.companions.Count;
             }
             this.shouldRestat = this.currentCompanions != this.lastCompanions;
             bool flag = !this.shouldRestat && !force;

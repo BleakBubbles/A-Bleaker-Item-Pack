@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +36,7 @@ namespace BleakMod
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
-            item.quality = PickupObject.ItemQuality.D;
+            item.quality = PickupObject.ItemQuality.EXCLUDED;
             item.AddToSubShop(ItemBuilder.ShopType.Cursula, 1f);
             CustomSynergies.Add("Great Skulls of Fire", new List<string>
             {
@@ -57,24 +57,32 @@ namespace BleakMod
             this.m_fireImmunity.damageType = CoreDamageTypes.Fire;
             player.healthHaver.damageTypeModifiers.Add(this.m_fireImmunity);
             base.Pickup(player);
-            if (player.stats.GetStatValue(PlayerStats.StatType.Curse) != 0)
+            if (!this.m_pickedUpThisRun)
             {
-                this.newCurse = player.stats.GetStatValue(PlayerStats.StatType.Curse) * 2f;
-                this.RemoveStat(PlayerStats.StatType.Curse);
-                this.AddStat(PlayerStats.StatType.Curse, newCurse);
-                player.stats.RecalculateStats(this.m_owner, true, false);
+                if (player.stats.GetStatValue(PlayerStats.StatType.Curse) != 0)
+                {
+                    this.newCurse = player.stats.GetStatValue(PlayerStats.StatType.Curse) * 2f;
+                    this.RemoveStat(PlayerStats.StatType.Curse);
+                    this.AddStat(PlayerStats.StatType.Curse, newCurse);
+                    player.stats.RecalculateStats(this.m_owner, true, false);
+                }
+                else
+                {
+                    this.newCurse = player.stats.GetStatValue(PlayerStats.StatType.Curse) + 5f;
+                    this.RemoveStat(PlayerStats.StatType.Curse);
+                    this.AddStat(PlayerStats.StatType.Curse, newCurse);
+                    player.stats.RecalculateStats(this.m_owner, true, false);
+                }
             }
             else
             {
-                this.newCurse = player.stats.GetStatValue(PlayerStats.StatType.Curse) + 5f;
-                this.RemoveStat(PlayerStats.StatType.Curse);
-                this.AddStat(PlayerStats.StatType.Curse, newCurse);
-                player.stats.RecalculateStats(this.m_owner, true, false);
+                this.newCurse = player.stats.GetStatValue(PlayerStats.StatType.Curse);
             }
             this.synergizedCurse = (int)(this.newCurse / 2);
             this.origCurse = this.newCurse;
             this.curseToAdd = 2 * this.newCurse;
             this.initiatedCurse = true;
+            this.m_pickedUpThisRun = true;
         }
         public override DebrisObject Drop(PlayerController player)
         {

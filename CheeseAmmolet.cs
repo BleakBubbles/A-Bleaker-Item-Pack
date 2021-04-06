@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -63,7 +63,7 @@ namespace BleakMod
             }
             else
             {
-                this.cheeseApplyChance = 0.75f;
+                this.cheeseApplyChance = 0.67f;
             }
             bool isInCombat = player.IsInCombat;
             if (isInCombat)

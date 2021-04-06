@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -78,9 +78,9 @@ namespace BleakMod
             else
             {
                 this.baseHealth = aiactor.healthHaver.GetMaxHealth();
-                this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.1f);
+                this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.2f);
                 aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
-                aiactor.EnemyScale = new Vector2(1f, 1f) * this.healthSizeMultiplier;
+                aiactor.EnemyScale *= this.healthSizeMultiplier;
             }
             
         }

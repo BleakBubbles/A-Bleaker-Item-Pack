@@ -44,6 +44,7 @@ namespace BleakMod
             //Set some other fields
             item.consumable = false;
             item.quality = ItemQuality.B;
+            item.AddToSubShop(ItemBuilder.ShopType.Trorc, 1f);
         }
         public override void Pickup(PlayerController player)
         {

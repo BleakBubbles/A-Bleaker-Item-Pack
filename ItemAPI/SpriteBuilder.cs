@@ -77,7 +77,6 @@ namespace ItemAPI
 
             var definition = ConstructDefinition(texture); //Generate definition
             definition.name = texture.name; //naming the definition is actually extremely important 
-
             return AddSpriteToCollection(definition, collection);
         }
 

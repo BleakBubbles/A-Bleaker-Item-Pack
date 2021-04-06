@@ -85,7 +85,7 @@ namespace BleakMod
         {
             if (a && a.IsNormalEnemy && a.healthHaver && !a.IsGone)
             {
-                a.healthHaver.ApplyDamage(time * 50, Vector2.zero, this.LastOwner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
+                a.healthHaver.ApplyDamage(time * 30, Vector2.zero, this.LastOwner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
             }
         }
         private void NoMotionModifier(ref Vector2 voluntaryVel, ref Vector2 involuntaryVel)
@@ -105,7 +105,7 @@ namespace BleakMod
                 this.EndEffect(user);
             }
         }
-        public RadialSlowInterface test;
+        public RadialSlowInterface test = new RadialSlowInterface();
         public float time;
         public float duration = 6f;
     }

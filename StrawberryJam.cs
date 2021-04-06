@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
@@ -33,7 +33,7 @@ namespace BleakMod
             //Ammonomicon entry variables
             string shortDesc = "Dread and butter";
             string longDesc = "Jammed enemies have a high chance of being instantly charmed.\n\nStrangely, jammed enemies have a knack for the gooey, sweet substance known as jam." +
-                "maybe you can use it to your advantage and keep them in place...";
+                " Maybe you can use it to your advantage and keep them in place...";
 
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //Do this after ItemBuilder.AddSpriteToObject!
@@ -67,6 +67,7 @@ namespace BleakMod
         }
         public class AffectedEnemyFlag : MonoBehaviour
         {
+
         }
         private void OnEnteredCombat()
         {
@@ -78,7 +79,7 @@ namespace BleakMod
             {
                 foreach (AIActor aiactor in base.Owner.CurrentRoom.GetActiveEnemies(RoomHandler.ActiveEnemyType.All))
                 {
-                    if (aiactor.GetComponent<AffectedEnemyFlag>() == null)
+                    if (aiactor.GetComponent<AffectedEnemyFlag>() == null && !aiactor.healthHaver.IsBoss && aiactor)
                     {
                         this.OnNewEnemyAppeared(aiactor);
                         aiactor.gameObject.AddComponent<AffectedEnemyFlag>();
@@ -88,7 +89,10 @@ namespace BleakMod
                 {
                     foreach(AIActor a in this.affectedEnemies)
                     {
-                        this.EatCharmedEnemy(a);
+                        if (!a.IsMimicEnemy && a)
+                        {
+                            this.EatCharmedEnemy(a);
+                        }
                     }
                 }
             }
@@ -129,15 +133,18 @@ namespace BleakMod
         }
         private void DelayedDestroyEnemy(AIActor enemy)
 	    {
-            this.TelefragVFXPrefab = (GameObject)ResourceCache.Acquire("Global VFX/VFX_Tentacleport");
-            GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.TelefragVFXPrefab);
-            gameObject.GetComponent<tk2dBaseSprite>().PlaceAtLocalPositionByAnchor(enemy.sprite.WorldCenter, tk2dBaseSprite.Anchor.LowerCenter);
-            gameObject.transform.position = gameObject.transform.position.Quantize(0.0625f);
-            gameObject.GetComponent<tk2dBaseSprite>().UpdateZDepth();
-            if (enemy)
-		    {
-			    enemy.EraseFromExistence(false);
-		    }
+            if(enemy && base.Owner)
+            {
+                this.TelefragVFXPrefab = (GameObject)ResourceCache.Acquire("Global VFX/VFX_Tentacleport");
+                GameObject gameObject = UnityEngine.Object.Instantiate<GameObject>(this.TelefragVFXPrefab);
+                gameObject.GetComponent<tk2dBaseSprite>().PlaceAtLocalPositionByAnchor(enemy.sprite.WorldCenter, tk2dBaseSprite.Anchor.LowerCenter);
+                gameObject.transform.position = gameObject.transform.position.Quantize(0.0625f);
+                gameObject.GetComponent<tk2dBaseSprite>().UpdateZDepth();
+                if (enemy)
+                {
+                    enemy.EraseFromExistence(false);
+                }
+            }
 	    }
         public override DebrisObject Drop(PlayerController player)
         {

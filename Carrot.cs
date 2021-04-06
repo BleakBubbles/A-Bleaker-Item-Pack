@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -81,6 +81,10 @@ namespace BleakMod
         protected override void Update()
         {
             base.Update();
+            if(base.Owner && GameManager.Instance.MainCameraController.CurrentZoomScale > 0.66f && !GameManager.Instance.MainCameraController.IsCurrentlyZoomIntermediate)
+            {
+                GameManager.Instance.MainCameraController.OverrideZoomScale = 0.66f;
+            }
             this.currentItems = base.m_owner.passiveItems.Count;
             if (this.currentItems != this.lastItems)
             {
@@ -110,7 +114,6 @@ namespace BleakMod
         }
         public override void Pickup(PlayerController player)
         {
-            GameManager.Instance.MainCameraController.OverrideZoomScale = 0.66f;
             base.Pickup(player);
         }
         public override DebrisObject Drop(PlayerController player)
