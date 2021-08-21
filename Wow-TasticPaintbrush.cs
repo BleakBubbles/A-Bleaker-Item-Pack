@@ -33,7 +33,7 @@ namespace BleakMod
 
             //Ammonomicon entry variables
             string shortDesc = "Heavy Art-illery";
-            string longDesc = "Let your artistic skills run rampant with this fun little paintbrush. Use techniques such as perspective, shading, freehand, and... arson?\n\nAnyway, it comes with a hat and status immunities free of charge, so there's that I guess.";
+            string longDesc = "Let your artistic skills run rampant with this fun little paintbrush. Use techniques such as perspective, shading, freehand, and... arson?\n\nAnyway, it comes with status immunities free of charge, so there's that I guess.";
 
             //Adds the item to the gungeon item list, the ammonomicon, the loot table, etc.
             //"kts" here is the item pool. In the console you'd type kts:sweating_bullets
@@ -98,6 +98,25 @@ namespace BleakMod
                 player.healthHaver.damageTypeModifiers.Remove(this.m_electricImmunity);
             }
             //this.disengageEffect(player);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.LastOwner != null)
+            {
+                if (this.m_fireImmunity != null)
+                {
+                    base.LastOwner.healthHaver.damageTypeModifiers.Remove(this.m_fireImmunity);
+                }
+                if (this.m_poisonImmunity != null)
+                {
+                    base.LastOwner.healthHaver.damageTypeModifiers.Remove(this.m_poisonImmunity);
+                }
+                if (this.m_electricImmunity != null)
+                {
+                    base.LastOwner.healthHaver.damageTypeModifiers.Remove(this.m_electricImmunity);
+                }
+            }
         }
         protected override void DoEffect(PlayerController user)
 		{

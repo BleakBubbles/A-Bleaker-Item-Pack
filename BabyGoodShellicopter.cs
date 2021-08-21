@@ -57,14 +57,10 @@ namespace BleakMod
         {
             base.Pickup(player);
         }
-        public override DebrisObject Drop(PlayerController player)
-        {
-            return base.Drop(player);
-        }
-		protected override void OnDestroy()
-		{
-			base.OnDestroy();
-		}
+		//protected override void OnDestroy()
+		//{
+		//	base.OnDestroy();
+		//}
 		public static void BuildPrefab()
         {
             if (prefab != null || CompanionBuilder.companionDictionary.ContainsKey(guid))return;
@@ -273,7 +269,6 @@ namespace BleakMod
 							bool flag5 = !nearestEnemy.IsHarmlessEnemy && nearestEnemy.IsNormalEnemy && !nearestEnemy.healthHaver.IsDead && nearestEnemy != this.m_aiActor;
 							if (flag5)
 							{
-								ETGModConsole.Log("targeting enemy.");
 								if(UnityEngine.Random.value <= 0.1f)
                                 {
 									this.m_aiActor.StartCoroutine(this.sayVoiceLine());

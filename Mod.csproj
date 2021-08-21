@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -97,7 +97,47 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdvancedGameStats.cs" />
+    <Compile Include="AdvancedGameStatsManager.cs" />
+    <Compile Include="AdvancedMidGameSaveData.cs" />
     <Compile Include="BasicGunTools.cs" />
+    <Compile Include="BreachShopTool.cs" />
+    <Compile Include="CustomCharacterSpecificGungeonFlags.cs" />
+    <Compile Include="CustomDungeonFlags.cs" />
+    <Compile Include="CustomDungeonFlagsComparer.cs" />
+    <Compile Include="CustomDungeonPrerequisite.cs" />
+    <Compile Include="CustomHuntQuest.cs" />
+    <Compile Include="CustomHuntQuests.cs" />
+    <Compile Include="CustomTrackedMaximums.cs" />
+    <Compile Include="CustomTrackedMaximumsComparer.cs" />
+    <Compile Include="CustomTrackedStats.cs" />
+    <Compile Include="CustomTrackedStatsComparer.cs" />
+    <Compile Include="ItemAPI\GunTools.cs" />
+    <Compile Include="JammedEnemyState.cs" />
+    <Compile Include="PhaseShifterStopwatch.cs" />
+    <Compile Include="EasyGoopDefinitions.cs" />
+    <Compile Include="GoonStone.cs" />
+    <Compile Include="OrbitalHaltInteractManager.cs" />
+    <Compile Include="ChamberOfFrogs.cs" />
+    <Compile Include="PrismaticGuonStone.cs" />
+    <Compile Include="HealthyBullets.cs" />
+    <Compile Include="CatchingMitts.cs" />
+    <Compile Include="CannonFactory.cs" />
+    <Compile Include="CannonInteractManager.cs" />
+    <Compile Include="OrbitalLaserInteractManager.cs" />
+    <Compile Include="Protractor.cs" />
+    <Compile Include="Bubbler.cs" />
+    <Compile Include="PrizeRifle.cs" />
+    <Compile Include="SaveAPIManager.cs" />
+    <Compile Include="SaveTools.cs" />
+    <Compile Include="TrickShot.cs" />
+    <Compile Include="SpecialAIActor.cs" />
+    <Compile Include="SpecialPickupObject.cs" />
+    <Compile Include="StarStriker.cs" />
+    <Compile Include="Rhythminator.cs" />
+    <Compile Include="EnemyInteractManager.cs" />
+    <Compile Include="PickpocketGuide.cs" />
+    <Compile Include="ProjectileInteractManager.cs" />
     <Compile Include="ItemAPI\ResourceExtractor.cs" />
     <Compile Include="MimicBullets.cs" />
     <Compile Include="DemonicBrick.cs" />
@@ -113,10 +153,12 @@
     <Compile Include="PendantOfTheFirstOrder.cs" />
     <Compile Include="PortableSewerGrate.cs" />
     <Compile Include="GoldenCirclet.cs" />
-    <Compile Include="SellCreepItem.cs" />
     <Compile Include="SomeBunny.cs" />
     <Compile Include="SmokingSkull.cs" />
     <Compile Include="HornOfTheDragun.cs" />
+    <Compile Include="SpecialOrbital.cs" />
+    <Compile Include="SpillOJar.cs" />
+    <Compile Include="AdvancedPlayerOrbitalItem.cs" />
     <Compile Include="Wow-TasticPaintbrush.cs" />
     <Compile Include="SuspiciousLookingBell.cs" />
     <Compile Include="BeholstersBelt.cs" />
@@ -128,7 +170,6 @@
     <Compile Include="Aegis Shield.cs" />
     <Compile Include="AmmocondasNest.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="Rhythminator.cs" />
     <Compile Include="HungryClips.cs" />
     <Compile Include="HeroicCape.cs" />
     <Compile Include="Underpill.cs" />
@@ -238,6 +279,47 @@
     <EmbeddedResource Include="Resources\gundromeda_pain.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\trick_shot.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_008.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_009.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_010.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_011.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_012.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_013.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_014.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_001.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_002.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_003.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_004.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_005.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_006.png" />
+    <EmbeddedResource Include="Resources\winchester_targets\winchester_target_007.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_001.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_002.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_003.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_004.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_005.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_006.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_007.png" />
+    <EmbeddedResource Include="Resources\phase_shift_vfx\phase_shift_vfx_idle_008.png" />
+    <EmbeddedResource Include="Resources\phase_shifter_stopwatch.png" />
+    <EmbeddedResource Include="Resources\goon_stone.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatismer_guon_stone_001.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatismer_guon_stone_002.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatismer_guon_stone_003.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatismer_guon_stone_004.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatismer_guon_stone_005.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatic_guon_stone_001.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatic_guon_stone_002.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatic_guon_stone_003.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatic_guon_stone_004.png" />
+    <EmbeddedResource Include="Resources\prismatic_guon_stone\prismatic_guon_stone_005.png" />
+    <EmbeddedResource Include="Resources\healthy_bullets.png" />
+    <EmbeddedResource Include="Resources\spill_o%27_tar.png" />
+    <EmbeddedResource Include="Resources\protractor.png" />
+    <EmbeddedResource Include="Resources\pickpocket_book.png" />
+    <EmbeddedResource Include="Resources\glove.png" />
     <EmbeddedResource Include="Resources\wip.png" />
     <EmbeddedResource Include="Resources\kill_pillars\kali_statue_fire_001.png" />
     <EmbeddedResource Include="Resources\kill_pillars\kali_statue_fire_002.png" />
@@ -253,62 +335,6 @@
     <EmbeddedResource Include="Resources\golden_circlet.png" />
     <EmbeddedResource Include="Resources\portable_sewer_grate.png" />
     <EmbeddedResource Include="Resources\lead_crown.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_left_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_left_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_left_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_right_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_right_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_attack_right_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_left_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_die_right_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_007.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_008.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_009.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_010.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_011.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_left_012.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_007.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_008.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_009.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_010.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_011.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_idle_right_012.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_left_007.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_001.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_002.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_003.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_004.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_005.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_006.png" />
-    <EmbeddedResource Include="Resources\some_bunny\some_bunny_run_right_007.png" />
     <EmbeddedResource Include="Resources\some_bunny_item.png" />
     <EmbeddedResource Include="Resources\skull.png" />
     <EmbeddedResource Include="Resources\wow_tastic_paintbrush_back\wow_tastic_paintbrush_back_003.png" />
@@ -343,6 +369,7 @@
     <EmbeddedResource Include="Resources\effigy_of_vengeance.png" />
     <EmbeddedResource Include="Resources\draguns_horn.png" />
     <EmbeddedResource Include="Resources\door_lord_item.png" />
+    <EmbeddedResource Include="Resources\chamber_of_frogs.png" />
     <Content Include="Resources\glass_cannon.png" />
   </ItemGroup>
   <ItemGroup />

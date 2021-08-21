@@ -48,9 +48,10 @@ namespace BleakMod
         }
         private void OnHitEnemy(Projectile proj, SpeculativeRigidbody enemy, bool fatal)
         {
-            if (fatal && !base.Owner.CurrentGun.IsReloading && base.Owner.CurrentGun.CanReloadNoMatterAmmo && base.Owner.CurrentGun.ClipShotsRemaining != base.Owner.CurrentGun.ClipCapacity)
+            Gun gun = base.Owner.CurrentGun;
+            if (fatal && !gun.IsReloading && gun.ClipShotsRemaining != gun.ClipCapacity)
             {
-                base.Owner.CurrentGun.ClipShotsRemaining = base.Owner.CurrentGun.ClipCapacity;
+                gun.MoveBulletsIntoClip(gun.ClipCapacity - gun.ClipShotsRemaining);
             }
         }
         public override void Pickup(PlayerController user)
@@ -62,6 +63,14 @@ namespace BleakMod
         {
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
         }
     }
 }

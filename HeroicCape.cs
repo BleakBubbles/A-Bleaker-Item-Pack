@@ -59,5 +59,13 @@ namespace BleakMod
             PassiveItem.DecrementFlag(player, typeof(LiveAmmoItem));
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (base.Owner != null)
+            {
+                PassiveItem.DecrementFlag(base.Owner, typeof(LiveAmmoItem));
+            }
+        }
     }
 }

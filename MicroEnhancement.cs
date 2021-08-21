@@ -93,6 +93,14 @@ namespace BleakMod
         {
             user.PostProcessProjectile -= this.PostProcessProjectile;
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.LastOwner != null)
+            {
+                base.LastOwner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
+        }
         //Disable or enable the active whenever you need!
         public override bool CanBeUsed(PlayerController user)
         {

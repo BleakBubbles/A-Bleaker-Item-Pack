@@ -42,42 +42,73 @@ namespace BleakMod
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.C;
         }
-        public void PostProcessProjectile(Projectile proj, float f)
+        //public void PostProcessProjectile(Projectile proj, float f)
+        //{
+        //    proj.OnHitEnemy += this.OnHitEnemy;
+        //}
+        private void OnAnyEnemyReceivedDamage(float damage, bool fatal, HealthHaver enemy)
         {
-            if (!proj.TreatedAsNonProjectileForChallenge)
+            ETGModConsole.Log($"this kid took {damage} damage");
+            if (enemy.IsBoss)
             {
-                proj.OnHitEnemy += this.OnHitEnemy;
+                return;
+            }
+            if (!fatal && enemy != null && enemy.aiActor != null && String.IsNullOrEmpty(enemy.aiActor.EnemyGuid) && this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
+            {
+                enemy.ApplyDamage((damage / 10) * this.affectedEnemies[enemy.aiActor.EnemyGuid], Vector2.zero, this.Owner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
+                ETGModConsole.Log("ay yo i recognize this kid");
             }
         }
-        private void OnHitEnemy(Projectile proj, SpeculativeRigidbody enemy, bool fatal)
-        {
-            if(!fatal && enemy.aiActor.healthHaver && enemy.aiActor.EnemyGuid != null && this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
-            {
-                enemy.aiActor.healthHaver.ApplyDamage((proj.baseData.damage / 10) * this.affectedEnemies[enemy.aiActor.EnemyGuid], Vector2.zero, this.Owner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
-            }
-        }
+        //private void OnHitEnemy(Projectile proj, SpeculativeRigidbody enemy, bool fatal)
+        //{
+        //    if (enemy.aiActor.healthHaver.IsBoss)
+        //    {
+        //        return;
+        //    }
+        //    if(!enemy.aiActor.healthHaver.IsBoss && !fatal && enemy.aiActor.healthHaver && String.IsNullOrEmpty(enemy.aiActor.EnemyGuid) && this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
+        //    {
+        //        enemy.aiActor.healthHaver.ApplyDamage((proj.baseData.damage / 10) * this.affectedEnemies[enemy.aiActor.EnemyGuid], Vector2.zero, this.Owner.ActorName, CoreDamageTypes.None, DamageCategory.Normal, false, null, false);
+        //    }
+        //}
         private void OnKilledEnemyContext(PlayerController player, HealthHaver enemy)
         {
+            if (enemy.aiActor.healthHaver.IsBoss)
+            {
+                return;
+            }
             if (this.affectedEnemies.ContainsKey(enemy.aiActor.EnemyGuid))
             {
                 this.affectedEnemies[enemy.aiActor.EnemyGuid] += 1;
+                ETGModConsole.Log("ay i know this kid");
             }
             else
             {
                 this.affectedEnemies.Add(enemy.aiActor.EnemyGuid, 1);
+                ETGModConsole.Log("recognizing this kid...");
             }
         }
         public override void Pickup(PlayerController user)
         {
             base.Pickup(user);
-            user.PostProcessProjectile += this.PostProcessProjectile;
+            //user.PostProcessProjectile += this.PostProcessProjectile;
+            user.OnAnyEnemyReceivedDamage += this.OnAnyEnemyReceivedDamage;
             user.OnKilledEnemyContext += this.OnKilledEnemyContext;
         }
         public override DebrisObject Drop(PlayerController player)
         {
-            player.PostProcessProjectile -= this.PostProcessProjectile;
+            //player.PostProcessProjectile -= this.PostProcessProjectile;
+            player.OnAnyEnemyReceivedDamage -= this.OnAnyEnemyReceivedDamage;
             player.OnKilledEnemyContext -= this.OnKilledEnemyContext;
             return base.Drop(player);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.OnAnyEnemyReceivedDamage -= this.OnAnyEnemyReceivedDamage;
+                base.Owner.OnKilledEnemyContext -= this.OnKilledEnemyContext;
+            }
         }
         public Dictionary<string, int> affectedEnemies = new Dictionary<string, int>();
     }

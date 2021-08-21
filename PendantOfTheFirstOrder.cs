@@ -44,15 +44,18 @@ namespace BleakMod
         }
         private void OnReloadedGun(PlayerController player, Gun gun)
         {
-            Projectile projectile = ((Gun)ETGMod.Databases.Items[598]).DefaultModule.projectiles[0];
-            GameObject obj1 = SpawnManager.SpawnProjectile(projectile.gameObject, player.sprite.WorldCenter, Quaternion.Euler(0f, 0f, (player.CurrentGun == null) ? 0f : player.FacingDirection), true);
-            Projectile proj1 = obj1.GetComponent<Projectile>();
-            proj1.Owner = base.gameActor;
-            proj1.Shooter = player.specRigidbody;
-            proj1.baseData.damage = 50f;
-            HomingModifier homingModifier = proj1.gameObject.GetOrAddComponent<HomingModifier>();
-            homingModifier.HomingRadius = 100f;
-            proj1.baseData.speed *= 0.75f;
+            if(gun.ClipShotsRemaining == 0)
+            {
+                Projectile projectile = ((Gun)ETGMod.Databases.Items[598]).DefaultModule.projectiles[0];
+                GameObject obj1 = SpawnManager.SpawnProjectile(projectile.gameObject, player.sprite.WorldCenter, Quaternion.Euler(0f, 0f, (player.CurrentGun == null) ? 0f : player.FacingDirection), true);
+                Projectile proj1 = obj1.GetComponent<Projectile>();
+                proj1.Owner = base.gameActor;
+                proj1.Shooter = player.specRigidbody;
+                proj1.baseData.damage = 50f;
+                HomingModifier homingModifier = proj1.gameObject.GetOrAddComponent<HomingModifier>();
+                homingModifier.HomingRadius = 100f;
+                proj1.baseData.speed *= 0.75f;
+            }
         }
         public override void Pickup(PlayerController player)
         {
@@ -68,7 +71,10 @@ namespace BleakMod
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            base.Owner.OnReloadedGun -= this.OnReloadedGun;
+            if(base.Owner != null)
+            {
+                base.Owner.OnReloadedGun -= this.OnReloadedGun;
+            }
         }
     }
 }

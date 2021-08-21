@@ -55,6 +55,14 @@ namespace BleakMod
             player.OnUsedBlank -= this.OnUsedBlank;
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.OnUsedBlank -= this.OnUsedBlank;
+            }
+        }
         private void OnUsedBlank(PlayerController player, int blanksRemaining)
         {
             if (this.Owner.HasMTGConsoleID("elimentaler"))

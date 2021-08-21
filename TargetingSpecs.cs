@@ -99,6 +99,14 @@ namespace BleakMod
                 this.EndEffect(user);
             }
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.LastOwner != null)
+            {
+                base.LastOwner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
+        }
         public override void Update()
         {
             base.Update();

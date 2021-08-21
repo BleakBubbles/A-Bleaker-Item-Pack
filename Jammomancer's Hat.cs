@@ -62,6 +62,14 @@ namespace BleakMod
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
+        }
         public static void BuildPrefab()
         {
             if (prefab != null || CompanionBuilder.companionDictionary.ContainsKey(guid))

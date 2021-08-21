@@ -69,6 +69,7 @@ namespace BleakMod
                 Exploder.DoRadialKnockback(base.LastOwner.CenterPosition, -25f, 25f);
                 yield return new WaitForSeconds(1);
             }
+            AkSoundEngine.PostEvent("Stop_WPN_All", base.gameObject);
         }
         private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
         {

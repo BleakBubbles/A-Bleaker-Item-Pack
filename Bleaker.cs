@@ -62,15 +62,6 @@ namespace BleakMod
                 Bleaker.goopDefs.Add(goopDefinition);
             }
             Bleaker.goopDefs.Add(Bleaker.cheeseGoop);
-            CustomSynergies.Add("For Science", new List<string>
-            {
-                "bb:bleaker"
-            }, new List<string>
-            {
-                "science_cannon",
-                "hot_lead",
-                "irradiated_lead"
-            }, true);
         }
         private void OnEnemyKilled(PlayerController player, HealthHaver enemy)
         {
@@ -85,7 +76,7 @@ namespace BleakMod
                     GoopDefinition goopDefinition = (component != null) ? component.RollGoop : null;
                 }
                 float duration = 0.75f;
-                DeadlyDeadlyGoopManager.GetGoopManagerForGoopType(Bleaker.goopDefs[UnityEngine.Random.Range(0, 3)]).TimedAddGoopCircle(enemy.specRigidbody.UnitCenter, 5f, duration, false);
+                DeadlyDeadlyGoopManager.GetGoopManagerForGoopType(Bleaker.goopDefs[UnityEngine.Random.Range(0, 3)]).TimedAddGoopCircle(enemy.specRigidbody.UnitCenter, 4f, duration, false);
             }
         }
         protected override void Update()
@@ -103,7 +94,7 @@ namespace BleakMod
                 Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(base.Owner.sprite);
                 this.goop = base.m_owner.CurrentGoop;
                 bool flag1 = this.goop == this.goopLast;
-                if (!flag1)
+                if (!flag1 && outlineMaterial != null)
                 {
                     this.RemoveStat(PlayerStats.StatType.Damage);
                     this.RemoveStat(PlayerStats.StatType.RateOfFire);
@@ -156,21 +147,6 @@ namespace BleakMod
                     homingModifier = proj.gameObject.AddComponent<HomingModifier>();
                     homingModifier.HomingRadius = 15;
                     homingModifier.AngularVelocity = 100;
-                }
-            }
-            if (base.Owner.HasMTGConsoleID("science_cannon") || base.Owner.HasMTGConsoleID("hot_lead") || base.Owner.HasMTGConsoleID("irradiated_lead") || this.Owner.HasMTGConsoleID("chaos_bullets"))
-            {
-                bool flag2 = this.goop == goopDefs[0];
-                if (flag2)
-                {
-                    proj.statusEffectsToApply.Add(this.FireModifierEffect);
-                    proj.AdjustPlayerProjectileTint(Color.red, 5, 0f);
-                }
-                bool flag3 = this.goop == goopDefs[1];
-                if (flag3)
-                {
-                    proj.statusEffectsToApply.Add(this.HealthModifierEffect);
-                    proj.AdjustPlayerProjectileTint(Color.green, 5, 0f);
                 }
             }
         }
@@ -258,6 +234,27 @@ namespace BleakMod
             player.OnKilledEnemyContext -= this.OnEnemyKilled;
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                if (this.m_fireImmunity != null)
+                {
+                    base.Owner.healthHaver.damageTypeModifiers.Remove(this.m_fireImmunity);
+                }
+                if (this.m_poisonImmunity != null)
+                {
+                    base.Owner.healthHaver.damageTypeModifiers.Remove(this.m_poisonImmunity);
+                }
+                if (this.m_electricImmunity != null)
+                {
+                    base.Owner.healthHaver.damageTypeModifiers.Remove(this.m_electricImmunity);
+                }
+                base.Owner.OnKilledEnemyContext -= this.OnEnemyKilled;
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
         }
         private DamageTypeModifier m_fireImmunity;
         private DamageTypeModifier m_poisonImmunity;

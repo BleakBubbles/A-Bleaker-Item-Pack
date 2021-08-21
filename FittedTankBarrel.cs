@@ -44,17 +44,11 @@ namespace BleakMod
         }
         public void PostProcessProjectile(Projectile proj, float f)
         {
-            float num = this.activationChance;
+            float num = this.activationChance * f;
             if (proj.PossibleSourceGun)
             {
-                float num2 = 1f / proj.PossibleSourceGun.DefaultModule.cooldownTime;
-                if (proj.PossibleSourceGun.Volley != null && proj.PossibleSourceGun.Volley.UsesShotgunStyleVelocityRandomizer)
-                {
-                    num2 *= (float)Mathf.Max(1, proj.PossibleSourceGun.Volley.projectiles.Count);
-                }
-                num = Mathf.Clamp01(this.activationsPerSecond / num2);
-                num = Mathf.Max(this.minActivationChance, num);
-                if(this.x % 3 == 1 && UnityEngine.Random.value <= num)
+                ETGModConsole.Log(num.ToString());
+                if (this.x % 3 == 1 && UnityEngine.Random.value <= num)
                 {
                     Projectile projectile = ((Gun)ETGMod.Databases.Items[486]).DefaultModule.projectiles[0];
                     GameObject obj1 = SpawnManager.SpawnProjectile(projectile.gameObject, base.Owner.sprite.WorldCenter, Quaternion.Euler(0f, 0f, (base.Owner.CurrentGun == null) ? 0f : base.Owner.FacingDirection), true);
@@ -150,12 +144,13 @@ namespace BleakMod
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
-            base.Owner.OnRoomClearEvent -= this.killCharmedEnemies;
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+                base.Owner.OnRoomClearEvent -= this.killCharmedEnemies;
+            }
         }
         private float activationChance = 0.1f;
-        private float activationsPerSecond = 1f;
-        private float minActivationChance = 0.05f;
         private int x = 1;
         private bool shouldSpawnEnemy = false;
         private List<AIActor> charmedEnemies = new List<AIActor>();

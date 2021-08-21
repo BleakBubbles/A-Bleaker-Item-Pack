@@ -61,6 +61,14 @@ namespace BleakMod
             this.EvaluateStats(player, true);
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                this.EvaluateStats(base.Owner, true);
+            }
+        }
         protected override void Update()
         {
             bool flag = base.Owner;

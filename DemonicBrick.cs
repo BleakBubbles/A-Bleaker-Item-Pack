@@ -63,17 +63,18 @@ namespace BleakMod
             proj1.SetProjectileSpriteRight("demonwal_move_001", 384, 103);
                 proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.BulletBlocker));
                 proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.BulletBreakable));
-                proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.HighObstacle));
-                //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyHitBox));
-                //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
-                //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyBlocker));
-                proj1.baseData.range = 50;
+            proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.HighObstacle));
+            proj1.specRigidbody.CollideWithTileMap = false;
+            proj1.UpdateCollisionMask();
+            //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyHitBox));
+            //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyCollider));
+            //proj1.specRigidbody.AddCollisionLayerIgnoreOverride(CollisionMask.LayerToMask(CollisionLayer.EnemyBlocker));
+            proj1.baseData.range = 50;
                 //ETGModConsole.Log("" + area.dimensions.x);
                 proj1.baseData.damage = 200f;
                 //proj1.AdditionalScaleMultiplier = vector.x / 12;
                 proj1.baseData.speed *= 0.5f;
-                proj1.specRigidbody.CollideWithTileMap = false;
-                proj1.UpdateCollisionMask();
+                
                 PierceProjModifier pierce = proj1.gameObject.GetOrAddComponent<PierceProjModifier>();
                 pierce.penetration = 100;
                 pierce.MaxBossImpacts = 1;

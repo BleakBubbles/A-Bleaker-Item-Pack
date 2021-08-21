@@ -48,7 +48,8 @@ namespace BleakMod
             }, new List<string>
             {
                 "rad_gun",
-                "sunglasses"
+                "sunglasses",
+                "bb:trick_shot"
             }, true);
             CustomSynergies.Add("Flashy", new List<string>
             {
@@ -77,6 +78,14 @@ namespace BleakMod
         {
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
         }
         private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
         {
@@ -120,6 +129,7 @@ namespace BleakMod
                 {
                     this.AddStat(PlayerStats.StatType.Coolness, 0f);
                 }
+                base.m_owner.stats.RecalculateStats(base.m_owner, true, false);
                 if (base.m_owner.HasMTGConsoleID("camera"))
                 {
                     this.handleDamage(true);

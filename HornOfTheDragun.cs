@@ -42,7 +42,7 @@ namespace BleakMod
             //Adds a passive modifier, like curse, coolness, damage, etc. to the item. Works for passives and actives.
             //Set some other fields
             item.consumable = false;
-            item.quality = ItemQuality.B;
+            item.quality = ItemQuality.A;
         }
         protected override void DoEffect(PlayerController user)
         {

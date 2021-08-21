@@ -60,7 +60,12 @@ namespace BleakMod
 		{
 			user.OnEnteredCombat -= this.OnEnteredCombat;
 		}
-		public void OnEnteredCombat()
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+			base.LastOwner.OnEnteredCombat -= this.OnEnteredCombat;
+        }
+        public void OnEnteredCombat()
         {
 			PlayerController owner = base.LastOwner;
 			this.savedHealth = owner.healthHaver.GetCurrentHealth();
@@ -153,10 +158,12 @@ namespace BleakMod
                     }
                 }
             }
+			AkSoundEngine.PostEvent("State_Bullet_Time_off", base.gameObject);
+
 		}
 
-        //Disable or enable the active whenever you need!
-        public override bool CanBeUsed(PlayerController user)
+		//Disable or enable the active whenever you need!
+		public override bool CanBeUsed(PlayerController user)
         {
             return base.CanBeUsed(user);
         }

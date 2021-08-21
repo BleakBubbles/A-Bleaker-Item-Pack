@@ -80,15 +80,25 @@ namespace BleakMod
                 this.baseHealth = aiactor.healthHaver.GetMaxHealth();
                 this.healthSizeMultiplier = UnityEngine.Random.Range(0.6f, 1.2f);
                 aiactor.healthHaver.SetHealthMaximum(this.healthSizeMultiplier * this.baseHealth, null, true);
-                aiactor.EnemyScale *= this.healthSizeMultiplier;
+                if (!aiactor.healthHaver.IsBoss)
+                {
+                    aiactor.EnemyScale *= this.healthSizeMultiplier;
+                    if (aiactor.ShadowObject)
+                    {
+                        aiactor.ShadowObject.transform.localScale *= healthSizeMultiplier;
+                    }
+                }
             }
-            
         }
         public override DebrisObject Drop(PlayerController player)
         {
             DebrisObject debrisObject = base.Drop(player);
             debrisObject.GetComponent<GundromedaPain>().m_pickedUpThisRun = true;
             return debrisObject;
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
         }
         public float healthSizeMultiplier;
         public float baseHealth;

@@ -153,6 +153,14 @@ namespace BleakMod
             debrisObject.GetComponent<StrawberryJam>().m_pickedUpThisRun = true;
             return debrisObject;
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.OnEnteredCombat -= this.OnEnteredCombat;
+            }
+        }
         public float charmChance;
         public List<AIActor> affectedEnemies = new List<AIActor>();
         YellowChamberItem yellowchamber = new YellowChamberItem();

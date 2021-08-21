@@ -43,27 +43,10 @@ namespace BleakMod
         }
         private void PostProcessProjectile(Projectile proj, float x)
         {
-            float num = this.activationChance;
+            float num = this.activationChance * x;
+            ETGModConsole.Log(num.ToString());
             if (proj.PossibleSourceGun)
             {
-                if (proj.PossibleSourceGun.PickupObjectId == 541)
-                {
-                    Projectile projectile = ((Gun)ETGMod.Databases.Items[53]).DefaultModule.projectiles[0];
-                    GameObject obj1 = SpawnManager.SpawnProjectile(projectile.gameObject, base.Owner.sprite.WorldCenter, Quaternion.Euler(0f, 0f, (base.Owner.CurrentGun == null) ? 0f : base.Owner.FacingDirection), true);
-                    Projectile proj1 = obj1.GetComponent<Projectile>();
-                    proj1.Owner = base.gameActor;
-                    proj1.Shooter = base.Owner.specRigidbody;
-                    proj1.OnHitEnemy += this.OnHitEnemy;
-                    proj1.collidesWithProjectiles = true;
-                    proj1.specRigidbody.OnPreRigidbodyCollision += this.HandlePreCollision;
-                }
-                float num2 = 1f / proj.PossibleSourceGun.DefaultModule.cooldownTime;
-                if (proj.PossibleSourceGun.Volley != null && proj.PossibleSourceGun.Volley.UsesShotgunStyleVelocityRandomizer)
-                {
-                    num2 *= (float)Mathf.Max(1, proj.PossibleSourceGun.Volley.projectiles.Count);
-                }
-                num = Mathf.Clamp01(this.activationsPerSecond / num2);
-                num = Mathf.Max(this.minActivationChance, num);
                 if (UnityEngine.Random.value <= num)
                 {
                     this.homingRing();
@@ -273,11 +256,12 @@ namespace BleakMod
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
         }
         private float activationChance = 0.1f;
-        private float activationsPerSecond = 1f;
-        private float minActivationChance = 0.05f;
         public float KnockbackForce = 800f;
         public float AngleTolerance = 30f;
     }

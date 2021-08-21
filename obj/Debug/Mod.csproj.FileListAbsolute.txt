@@ -115,11 +115,8 @@ C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.AIModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.Physics2DModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.UnityWebRequestWWWModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.ParticleSystemModule.dll
-C:\Users\fifth\source\repos\Mod Project\bin\Debug\Assembly-CSharp-firstpass.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.ScreenCaptureModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\Ionic.Zip.dll
-C:\Users\fifth\source\repos\Mod Project\bin\Debug\YamlDotNet.dll
-C:\Users\fifth\source\repos\Mod Project\bin\Debug\Newtonsoft.Json.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.SharedInternalsModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.UnityWebRequestModule.dll
@@ -154,7 +151,6 @@ C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.UnityWebRequestAud
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.UnityWebRequestTextureModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.VideoModule.dll
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.WindModule.dll
-C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.ImageConversionModule.xml
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.AudioModule.xml
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.IMGUIModule.xml
 C:\Users\fifth\source\repos\Mod Project\bin\Debug\UnityEngine.PhysicsModule.xml

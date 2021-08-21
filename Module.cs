@@ -1,8 +1,10 @@
 ﻿using ItemAPI;
+using SaveAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using UnityEngine;
 
 namespace BleakMod
@@ -10,7 +12,7 @@ namespace BleakMod
     public class Module : ETGModule
     {
         public static readonly string MOD_NAME = "A Bleaker Item Pack";
-        public static readonly string VERSION = "0.2.0";
+        public static readonly string VERSION = "0.2.3";
         public static readonly string TEXT_COLOR = "#00FFFF";
 
         public override void Start()
@@ -24,14 +26,13 @@ namespace BleakMod
             GungeonWind.Register();
             FriendshipBracelet.Register();
             FlamingSkull.Register();
-            ShowoffBullets.Register();
             Carrot.Register();
             WinchestersHat.Register();
             GundromedaPain.Register();
             Bleaker.Register();
             CheeseAmmolet.Register();
             StrawberryJam.Register();
-            WhiteBulletCell.Register();
+            //WhiteBulletCell.Register();
             Distribullets.Register();
             HungryClips.Register();
             TatteredCape.Register();
@@ -42,11 +43,18 @@ namespace BleakMod
             //SomeBunny.Register();
             FittedTankBarrel.Register();
             LeadCrown.Register();
-            PiratesPendant.Register();
+            //PiratesPendant.Register();
             PendantOfTheFirstOrder.Register();
             MimicBullets.Register();
-            SellCreepItem.Register();
+            CatchingMitts.Register();
+            Protractor.Register();
+            HealthyBullets.Register();
+            ChamberOfFrogs.Register();
+            TrickShot.Register();
+            ShowoffBullets.Register();
             BabyGoodShellicopter.Init();
+            PrismaticGuonStone.Init();
+            //GoonStone.Init();
             Overpill.Init();
             JammomancersHat.Init();
             ShotgunEnergyDrink.Init();
@@ -58,7 +66,7 @@ namespace BleakMod
             GlassPrincesCannon.Add();
             Rewind.Init();
             Telegunesis.Init();
-            Underpill.Init();
+            //Underpill.Init();
             AegisShield.Init();
             AmmocondasNest.Init();
             ShadesShades.Init();    
@@ -68,15 +76,24 @@ namespace BleakMod
             SmokingSkull.Init();
             PortableSewerGrate.Init();
             GoldenCirclet.Init();
-            PackOfLostItems.Init();
+            //PackOfLostItems.Init();
             CapeOfTheResourcefulRat.Init();
-            LootersGloves.Init();
-            DemonicBrick.Init();
+            //DemonicBrick.Init();
             EffigyOfVengeance.Init();
             HornOfTheDragun.Init();
-            //LoathesomeBunny.Init();
+            PickpocketGuide.Init();
+            SpillOJar.Init();
+            PhaseShifterStopwatch.Init();
             Rhythminator.Add();
+            //Bubbler.Add();
+            StartStriker.Add();
+            PrizeRifle.Add();
             MultiActiveReloadManager.SetupHooks();
+            EasyGoopDefinitions.DefineDefaultGoops();
+            //ZipFilePath = this.Metadata.Archive;
+            //FilePath = this.Metadata.Directory;
+            //AudioResourceLoader.InitAudio;
+            SaveAPIManager.Setup("bb:");
             Log($"{MOD_NAME} v{VERSION} started successfully.", TEXT_COLOR);
         }
 

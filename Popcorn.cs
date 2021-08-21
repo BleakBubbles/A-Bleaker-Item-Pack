@@ -86,6 +86,14 @@ namespace BleakMod
             player.PostProcessProjectile -= this.PostProcessProjectile;
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
+        }
         private float chanceIncrease;
     }
 }

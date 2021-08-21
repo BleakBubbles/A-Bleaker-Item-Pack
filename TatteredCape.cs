@@ -1,4 +1,5 @@
 ﻿using System;
+using SaveAPI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ using Dungeonator;
 
 namespace BleakMod
 {
-    public class TatteredCape: PassiveItem
-    {   
+    public class TatteredCape : PassiveItem
+    {
         //Call this method from the Start() method of your ETGModule extension
         public static void Register()
         {
@@ -38,21 +39,21 @@ namespace BleakMod
             ItemBuilder.SetupItem(item, shortDesc, longDesc, "bb");
 
             //Adds the actual passive effect to the item
-
+            item.SetupUnlockOnFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05, true);
             //Set the rarity of the item
             item.quality = PickupObject.ItemQuality.B;
         }
         public void OnEnteredCombat()
         {
             this.isBossRoom = false;
-            foreach(AIActor enemy in base.Owner.CurrentRoom.GetActiveEnemies(Dungeonator.RoomHandler.ActiveEnemyType.RoomClear))
+            foreach (AIActor enemy in base.Owner.CurrentRoom.GetActiveEnemies(Dungeonator.RoomHandler.ActiveEnemyType.RoomClear))
             {
                 if (enemy.healthHaver.IsBoss)
                 {
                     this.isBossRoom = true;
                 }
             }
-            if(UnityEngine.Random.value <= 0.33f && base.Owner && !this.isBossRoom)
+            if (UnityEngine.Random.value <= 0.1f && base.Owner && !this.isBossRoom)
             {
                 try
                 {
@@ -62,6 +63,7 @@ namespace BleakMod
                     if (flag)
                     {
                         AIActor aiactor = AIActor.Spawn(orLoadByGuid.aiActor, intVector.Value, GameManager.Instance.Dungeon.data.GetAbsoluteRoomFromPosition(intVector.Value), true, AIActor.AwakenAnimationType.Default, true);
+                        aiactor.healthHaver.OnPreDeath += this.onPreDeath;
                     }
                 }
                 catch (Exception ex)
@@ -71,12 +73,9 @@ namespace BleakMod
                 this.timesSpawned += 1;
             }
         }
-        private void OnKilledEnemyContext(PlayerController player, HealthHaver enemy)
+        private void onPreDeath(Vector2 vector)
         {
-            if(enemy.aiActor.EnemyGuid == "fa6a7ac20a0e4083a4c2ee0d86f8bbf7")
-            {
-                this.timesSpawned -= 1;
-            }
+            this.timesSpawned -= 1;
         }
         private void OnRoomClearEvent(PlayerController player)
         {
@@ -95,13 +94,11 @@ namespace BleakMod
         {
             base.Pickup(player);
             player.OnEnteredCombat += this.OnEnteredCombat;
-            player.OnKilledEnemyContext += this.OnKilledEnemyContext;
             player.OnRoomClearEvent += this.OnRoomClearEvent;
         }
         public override DebrisObject Drop(PlayerController player)
         {
             player.OnEnteredCombat -= this.OnEnteredCombat;
-            player.OnKilledEnemyContext -= this.OnKilledEnemyContext;
             player.OnRoomClearEvent -= this.OnRoomClearEvent;
             DebrisObject debrisObject = base.Drop(player);
             TatteredCape component = debrisObject.GetComponent<TatteredCape>();

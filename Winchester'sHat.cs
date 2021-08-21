@@ -87,6 +87,14 @@ namespace BleakMod
             this.m_pickedUpThisRun = true;
             return debrisObject;
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if (base.Owner != null)
+            {
+                base.Owner.OnUsedPlayerItem -= this.DoEffect;
+            }
+        }
         public static void BuildPrefab()
         {
             GameObject gameObject = SpriteBuilder.SpriteFromResource("BleakMod/Resources/winchester_hats/winchester_hat_right", null);

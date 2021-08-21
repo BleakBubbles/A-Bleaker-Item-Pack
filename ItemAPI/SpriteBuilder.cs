@@ -108,7 +108,7 @@ namespace ItemAPI
         }
 
         public static tk2dSpriteAnimationClip AddAnimation(tk2dSpriteAnimator animator, tk2dSpriteCollectionData collection, List<int> spriteIDs,
-            string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Loop)
+            string clipName, tk2dSpriteAnimationClip.WrapMode wrapMode = tk2dSpriteAnimationClip.WrapMode.Loop, float fps = 15)
         {
             if (animator.Library == null)
             {
@@ -135,7 +135,7 @@ namespace ItemAPI
             var clip = new tk2dSpriteAnimationClip()
             {
                 name = clipName,
-                fps = 15,
+                fps = fps,
                 wrapMode = wrapMode,
             };
             Array.Resize(ref animator.Library.clips, animator.Library.clips.Length + 1);

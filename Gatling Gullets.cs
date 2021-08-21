@@ -44,11 +44,17 @@ namespace BleakMod
         }
         public void PostProcessProjectile(Projectile proj, float f)
         {
-            proj.OnHitEnemy += this.OnHitEnemy;
+            chanceScalar = f;
+            if (!proj.TreatedAsNonProjectileForChallenge)
+            {
+                proj.OnHitEnemy += this.OnHitEnemy;
+            }
         }
         private void OnHitEnemy(Projectile proj, SpeculativeRigidbody enemy, bool fatal)
         {
-            if (UnityEngine.Random.value <= 0.20f)
+            float chance = 0.1f * chanceScalar;
+            ETGModConsole.Log("" + chance);
+            if (UnityEngine.Random.value <= chance)
             {
                 for (int i = 0; i < 3; i++)
                 {
@@ -92,10 +98,6 @@ namespace BleakMod
                 }
             }
         }
-        public PlayerController yourMethod(PlayerController player)
-        {
-            return player;
-        }
         public override void Pickup(PlayerController player)
         {
             base.Pickup(player);
@@ -110,9 +112,13 @@ namespace BleakMod
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+            }
         }
         public GameObject Rocket;
         private int m_spawnedRockets;
+        private float chanceScalar = 1;
     }
 }

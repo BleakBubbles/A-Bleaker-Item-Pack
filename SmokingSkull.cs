@@ -187,7 +187,7 @@ namespace BleakMod
         protected override void OnDestroy()
         {
             base.OnDestroy();
-            if (this.m_isCurrentlyActive)
+            if (this.m_isCurrentlyActive && base.LastOwner != null)
             {
                 this.BreakStealth(base.LastOwner);
             }

@@ -47,8 +47,7 @@ namespace BleakMod
                 "bb:carrot"
             }, new List<string>
             {
-                "broccoli",
-                "blasphemy_alt"
+                "broccoli"
             }, true);
         }
         private void AddStat(PlayerStats.StatType statType, float amount, StatModifier.ModifyMethod method = StatModifier.ModifyMethod.ADDITIVE)
@@ -81,11 +80,11 @@ namespace BleakMod
         protected override void Update()
         {
             base.Update();
+            currentItems = base.Owner.passiveItems.Count + base.Owner.inventory.AllGuns.Count;
             if(base.Owner && GameManager.Instance.MainCameraController.CurrentZoomScale > 0.66f && !GameManager.Instance.MainCameraController.IsCurrentlyZoomIntermediate)
             {
                 GameManager.Instance.MainCameraController.OverrideZoomScale = 0.66f;
             }
-            this.currentItems = base.m_owner.passiveItems.Count;
             if (this.currentItems != this.lastItems)
             {
                 if (base.m_owner.HasMTGConsoleID("broccoli") || base.m_owner.HasMTGConsoleID("blasphemy_alt"))
@@ -122,6 +121,11 @@ namespace BleakMod
             DebrisObject debrisObject = base.Drop(player);
             debrisObject.GetComponent<Carrot>().m_pickedUpThisRun = true;
             return debrisObject;
+        }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            GameManager.Instance.MainCameraController.OverrideZoomScale = 1f;
         }
         public int currentItems;
         public int lastItems;

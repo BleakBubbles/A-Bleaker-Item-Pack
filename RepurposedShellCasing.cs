@@ -89,6 +89,15 @@ namespace BleakMod
             this.DisableVFX(player);
             return base.Drop(player);
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.Owner != null)
+            {
+                base.Owner.PostProcessProjectile -= this.PostProcessProjectile;
+                this.DisableVFX(base.Owner);
+            }
+        }
         public float extraDamage;
         public bool hasExtraDamage;
     }

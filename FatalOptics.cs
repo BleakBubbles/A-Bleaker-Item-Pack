@@ -105,6 +105,14 @@ namespace BleakMod
                 this.EndEffect(user);
             }
         }
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            if(base.m_isCurrentlyActive && base.LastOwner != null)
+            {
+                this.EndEffect(base.LastOwner);
+            }
+        }
         public RadialSlowInterface test = new RadialSlowInterface();
         public float time;
         public float duration = 6f;

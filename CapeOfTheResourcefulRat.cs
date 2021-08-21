@@ -198,7 +198,7 @@ namespace BleakMod
                     {
                         if (m_activeActions != null)
                         {
-                            spawnpos += m_activeActions.Aim.Vector.normalized * BraveTime.DeltaTime * 10f;
+                            spawnpos = m_activeActions.Aim.Vector;
                         }
                     }
                     this.proj.SendInDirection(spawnpos - this.proj.specRigidbody.UnitCenter, true);

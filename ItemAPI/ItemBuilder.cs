@@ -241,7 +241,7 @@ namespace ItemAPI
             f.SetValue(obj, value);
         }
 
-        private static T2 GetPrivateType<T, T2>(T obj, string field)
+        public static T2 GetPrivateType<T, T2>(T obj, string field)
         {
             FieldInfo f = typeof(T).GetField(field, BindingFlags.NonPublic | BindingFlags.Instance);
             return (T2)f.GetValue(obj);
