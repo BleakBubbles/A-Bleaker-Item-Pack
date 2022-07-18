@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -97,115 +100,120 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvancedGameStats.cs" />
-    <Compile Include="AdvancedGameStatsManager.cs" />
-    <Compile Include="AdvancedMidGameSaveData.cs" />
-    <Compile Include="BasicGunTools.cs" />
-    <Compile Include="BreachShopTool.cs" />
-    <Compile Include="CustomCharacterSpecificGungeonFlags.cs" />
-    <Compile Include="CustomDungeonFlags.cs" />
-    <Compile Include="CustomDungeonFlagsComparer.cs" />
-    <Compile Include="CustomDungeonPrerequisite.cs" />
-    <Compile Include="CustomHuntQuest.cs" />
-    <Compile Include="CustomHuntQuests.cs" />
-    <Compile Include="CustomTrackedMaximums.cs" />
-    <Compile Include="CustomTrackedMaximumsComparer.cs" />
-    <Compile Include="CustomTrackedStats.cs" />
-    <Compile Include="CustomTrackedStatsComparer.cs" />
+    <Compile Include="Tools\AdvancedGameStats.cs" />
+    <Compile Include="Tools\AdvancedGameStatsManager.cs" />
+    <Compile Include="Tools\AdvancedMidGameSaveData.cs" />
+    <Compile Include="Tools\BasicGunTools.cs" />
+    <Compile Include="Tools\BreachShopTool.cs" />
+    <Compile Include="Tools\CustomCharacterSpecificGungeonFlags.cs" />
+    <Compile Include="Tools\CustomDungeonFlags.cs" />
+    <Compile Include="Tools\CustomDungeonFlagsComparer.cs" />
+    <Compile Include="Tools\CustomDungeonPrerequisite.cs" />
+    <Compile Include="Tools\CustomHuntQuest.cs" />
+    <Compile Include="Tools\CustomHuntQuests.cs" />
+    <Compile Include="Tools\CustomTrackedMaximums.cs" />
+    <Compile Include="Tools\CustomTrackedMaximumsComparer.cs" />
+    <Compile Include="Tools\CustomTrackedStats.cs" />
+    <Compile Include="Tools\CustomTrackedStatsComparer.cs" />
     <Compile Include="ItemAPI\GunTools.cs" />
-    <Compile Include="JammedEnemyState.cs" />
-    <Compile Include="PhaseShifterStopwatch.cs" />
-    <Compile Include="EasyGoopDefinitions.cs" />
-    <Compile Include="GoonStone.cs" />
-    <Compile Include="OrbitalHaltInteractManager.cs" />
-    <Compile Include="ChamberOfFrogs.cs" />
-    <Compile Include="PrismaticGuonStone.cs" />
-    <Compile Include="HealthyBullets.cs" />
-    <Compile Include="CatchingMitts.cs" />
-    <Compile Include="CannonFactory.cs" />
-    <Compile Include="CannonInteractManager.cs" />
-    <Compile Include="OrbitalLaserInteractManager.cs" />
-    <Compile Include="Protractor.cs" />
-    <Compile Include="Bubbler.cs" />
-    <Compile Include="PrizeRifle.cs" />
-    <Compile Include="SaveAPIManager.cs" />
-    <Compile Include="SaveTools.cs" />
-    <Compile Include="TrickShot.cs" />
-    <Compile Include="SpecialAIActor.cs" />
-    <Compile Include="SpecialPickupObject.cs" />
-    <Compile Include="StarStriker.cs" />
-    <Compile Include="Rhythminator.cs" />
-    <Compile Include="EnemyInteractManager.cs" />
-    <Compile Include="PickpocketGuide.cs" />
-    <Compile Include="ProjectileInteractManager.cs" />
+    <Compile Include="Tools\Hat.cs" />
+    <Compile Include="Tools\HatController.cs" />
+    <Compile Include="Tools\HatControllerAdder.cs" />
+    <Compile Include="Tools\HatDefinitions.cs" />
+    <Compile Include="Tools\HatUtility.cs" />
+    <Compile Include="Tools\JammedEnemyState.cs" />
+    <Compile Include="Items\PhaseShifterStopwatch.cs" />
+    <Compile Include="Tools\EasyGoopDefinitions.cs" />
+    <Compile Include="Items\GoonStone.cs" />
+    <Compile Include="Tools\OrbitalHaltInteractManager.cs" />
+    <Compile Include="Items\ChamberOfFrogs.cs" />
+    <Compile Include="Items\PrismaticGuonStone.cs" />
+    <Compile Include="Items\HealthyBullets.cs" />
+    <Compile Include="Items\CatchingMitts.cs" />
+    <Compile Include="Guns\CannonFactory.cs" />
+    <Compile Include="Tools\CannonInteractManager.cs" />
+    <Compile Include="Tools\OrbitalLaserInteractManager.cs" />
+    <Compile Include="Items\Protractor.cs" />
+    <Compile Include="Guns\Bubbler.cs" />
+    <Compile Include="Guns\PrizeRifle.cs" />
+    <Compile Include="Tools\SaveAPIManager.cs" />
+    <Compile Include="Tools\SaveTools.cs" />
+    <Compile Include="Items\TrickShot.cs" />
+    <Compile Include="Tools\SpecialAIActor.cs" />
+    <Compile Include="Tools\SpecialPickupObject.cs" />
+    <Compile Include="Guns\StarStriker.cs" />
+    <Compile Include="Guns\Rhythminator.cs" />
+    <Compile Include="Tools\EnemyInteractManager.cs" />
+    <Compile Include="Items\PickpocketGuide.cs" />
+    <Compile Include="Tools\ProjectileInteractManager.cs" />
     <Compile Include="ItemAPI\ResourceExtractor.cs" />
-    <Compile Include="MimicBullets.cs" />
-    <Compile Include="DemonicBrick.cs" />
-    <Compile Include="CapeOfTheResourcefulRat.cs" />
-    <Compile Include="CorpseInteractManager.cs" />
-    <Compile Include="BabyGoodShellicopter.cs" />
-    <Compile Include="EffigyOfVengeance.cs" />
-    <Compile Include="LootersGloves.cs" />
-    <Compile Include="PackOfLostItems.cs" />
-    <Compile Include="FittedTankBarrel.cs" />
-    <Compile Include="LeadCrown.cs" />
-    <Compile Include="PiratesPendant.cs" />
-    <Compile Include="PendantOfTheFirstOrder.cs" />
-    <Compile Include="PortableSewerGrate.cs" />
-    <Compile Include="GoldenCirclet.cs" />
-    <Compile Include="SomeBunny.cs" />
-    <Compile Include="SmokingSkull.cs" />
-    <Compile Include="HornOfTheDragun.cs" />
-    <Compile Include="SpecialOrbital.cs" />
-    <Compile Include="SpillOJar.cs" />
-    <Compile Include="AdvancedPlayerOrbitalItem.cs" />
-    <Compile Include="Wow-TasticPaintbrush.cs" />
-    <Compile Include="SuspiciousLookingBell.cs" />
-    <Compile Include="BeholstersBelt.cs" />
-    <Compile Include="CheeseAmmolet.cs" />
-    <Compile Include="Distribullets.cs" />
-    <Compile Include="Gatling Gullets.cs" />
-    <Compile Include="Shades%27s Shades.cs" />
-    <Compile Include="MultiActiveReload.cs" />
-    <Compile Include="Aegis Shield.cs" />
-    <Compile Include="AmmocondasNest.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="HungryClips.cs" />
-    <Compile Include="HeroicCape.cs" />
-    <Compile Include="Underpill.cs" />
-    <Compile Include="Popcorn.cs" />
-    <Compile Include="Telegunesis.cs" />
-    <Compile Include="TatteredCape.cs" />
-    <Compile Include="RepurposedShellCasing.cs" />
-    <Compile Include="WhiteBulletCell.cs" />
-    <Compile Include="Stuff.cs" />
-    <Compile Include="GlassPrincesCannon.cs" />
-    <Compile Include="StrawberryJam.cs" />
-    <Compile Include="GundromedaPain.cs" />
-    <Compile Include="GunShredder.cs" />
-    <Compile Include="Bleaker.cs" />
-    <Compile Include="Rewind.cs" />
-    <Compile Include="Winchester%27sHat.cs" />
-    <Compile Include="Jammomancer%27s Hat.cs" />
-    <Compile Include="Bowler%27sBriefcase.cs" />
-    <Compile Include="Carrot.cs" />
-    <Compile Include="ShowoffBullets.cs" />
-    <Compile Include="TargetingSpecs.cs" />
-    <Compile Include="FlamingSkull.cs" />
-    <Compile Include="FriendshipBracelet.cs" />
-    <Compile Include="MicroEnhancement.cs" />
-    <Compile Include="GungeonWind.cs" />
-    <Compile Include="LifeCube.cs" />
-    <Compile Include="FatalOptics.cs" />
-    <Compile Include="ShotgunEnergyDrink.cs" />
-    <Compile Include="Overpill.cs" />
+    <Compile Include="Items\MimicBullets.cs" />
+    <Compile Include="Items\DemonicBrick.cs" />
+    <Compile Include="Items\CapeOfTheResourcefulRat.cs" />
+    <Compile Include="Tools\CorpseInteractManager.cs" />
+    <Compile Include="Items\BabyGoodShellicopter.cs" />
+    <Compile Include="Items\EffigyOfVengeance.cs" />
+    <Compile Include="Items\LootersGloves.cs" />
+    <Compile Include="Items\PackOfLostItems.cs" />
+    <Compile Include="Items\FittedTankBarrel.cs" />
+    <Compile Include="Items\LeadCrown.cs" />
+    <Compile Include="Items\PiratesPendant.cs" />
+    <Compile Include="Items\PendantOfTheFirstOrder.cs" />
+    <Compile Include="Items\PortableSewerGrate.cs" />
+    <Compile Include="Items\GoldenCirclet.cs" />
+    <Compile Include="Items\SomeBunny.cs" />
+    <Compile Include="Items\SmokingSkull.cs" />
+    <Compile Include="Items\HornOfTheDragun.cs" />
+    <Compile Include="Tools\SpecialOrbital.cs" />
+    <Compile Include="Items\SpillOJar.cs" />
+    <Compile Include="Tools\AdvancedPlayerOrbitalItem.cs" />
+    <Compile Include="Items\Wow-TasticPaintbrush.cs" />
+    <Compile Include="Items\SuspiciousLookingBell.cs" />
+    <Compile Include="Items\BeholstersBelt.cs" />
+    <Compile Include="Items\CheeseAmmolet.cs" />
+    <Compile Include="Items\Distribullets.cs" />
+    <Compile Include="Items\Gatling Gullets.cs" />
+    <Compile Include="Items\Shades%27s Shades.cs" />
+    <Compile Include="Tools\MultiActiveReload.cs" />
+    <Compile Include="Items\Aegis Shield.cs" />
+    <Compile Include="Items\AmmocondasNest.cs" />
+    <Compile Include="Tools\Tools.cs" />
+    <Compile Include="Items\HungryClips.cs" />
+    <Compile Include="Items\HeroicCape.cs" />
+    <Compile Include="Items\Underpill.cs" />
+    <Compile Include="Items\Popcorn.cs" />
+    <Compile Include="Items\Telegunesis.cs" />
+    <Compile Include="Items\TatteredCape.cs" />
+    <Compile Include="Items\RepurposedShellCasing.cs" />
+    <Compile Include="Items\WhiteBulletCell.cs" />
+    <Compile Include="Tools\Stuff.cs" />
+    <Compile Include="Guns\GlassPrincesCannon.cs" />
+    <Compile Include="Items\StrawberryJam.cs" />
+    <Compile Include="Items\GundromedaPain.cs" />
+    <Compile Include="Items\GunShredder.cs" />
+    <Compile Include="Items\Bleaker.cs" />
+    <Compile Include="Items\Rewind.cs" />
+    <Compile Include="Items\Winchester%27sHat.cs" />
+    <Compile Include="Items\Jammomancer%27s Hat.cs" />
+    <Compile Include="Items\Bowler%27sBriefcase.cs" />
+    <Compile Include="Items\Carrot.cs" />
+    <Compile Include="Items\ShowoffBullets.cs" />
+    <Compile Include="Items\TargetingSpecs.cs" />
+    <Compile Include="Items\FlamingSkull.cs" />
+    <Compile Include="Items\FriendshipBracelet.cs" />
+    <Compile Include="Items\MicroEnhancement.cs" />
+    <Compile Include="Items\GungeonWind.cs" />
+    <Compile Include="Items\LifeCube.cs" />
+    <Compile Include="Items\FatalOptics.cs" />
+    <Compile Include="Items\ShotgunEnergyDrink.cs" />
+    <Compile Include="Items\Overpill.cs" />
     <Compile Include="ItemAPI\CompanionBuilder.cs" />
     <Compile Include="ItemAPI\CustomSynergies.cs" />
     <Compile Include="ItemAPI\FakePrefab\FakePrefab.cs" />
     <Compile Include="ItemAPI\FakePrefab\FakePrefabHooks.cs" />
     <Compile Include="ItemAPI\ItemBuilder.cs" />
     <Compile Include="ItemAPI\Tools.cs" />
-    <Compile Include="Module.cs" />
+    <Compile Include="Tools\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ItemAPI\SpriteBuilder.cs" />
   </ItemGroup>
