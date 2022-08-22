@@ -126,8 +126,9 @@ namespace BleakMod
 			AkSoundEngine.PostEvent("Play_WPN_seriouscannon_shot_01", base.gameObject);
 		}
 
-		protected void Update()
+		public override void Update()
 		{
+			base.Update();
 			//Some boilerplate code that handles sounds and reloading
 			if (this.gun.CurrentOwner)
 			{

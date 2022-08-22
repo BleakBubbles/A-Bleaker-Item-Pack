@@ -4,24 +4,37 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using BepInEx;
 
 using UnityEngine;
 
 namespace BleakMod
 {
-    public class Module : ETGModule
+    [BepInDependency("etgmodding.etg.mtgapi")]
+    [BepInDependency(Alexandria.Alexandria.GUID)]
+    [BepInPlugin(GUID, NAME, VERSION)]
+    public class Module : BaseUnityPlugin
     {
+        public const string GUID = "bleak.etg.abip";
+        public const string NAME = "A Bleaker Item Pack";
+        public const string VERSION = "1.0.3";
         public static readonly string MOD_NAME = "A Bleaker Item Pack";
-        public static readonly string VERSION = "0.2.5";
         public static readonly string TEXT_COLOR = "#00FFFF";
 
-        public override void Start()
+        public void Start()
+        {
+            ETGModMainBehaviour.WaitForGameManagerStart(GMStart);
+        }
+
+        public void GMStart(GameManager g)
         {
             ItemBuilder.Init();
             //Hooks.Init();
             //EnemyTools.Init();
             //Tools.Init();
             //EnemyBuilder.Init();
+            ETGMod.Assets.SetupSpritesFromFolder(Path.Combine(this.FolderPath(), "sprites"));
             LifeCube.Register();
             GungeonWind.Register();
             FriendshipBracelet.Register();
@@ -31,7 +44,6 @@ namespace BleakMod
             GundromedaPain.Register();
             Bleaker.Register();
             CheeseAmmolet.Register();
-            StrawberryJam.Register();
             //WhiteBulletCell.Register();
             Distribullets.Register();
             HungryClips.Register();
@@ -54,6 +66,7 @@ namespace BleakMod
             ShowoffBullets.Register();
             BabyGoodShellicopter.Init();
             PrismaticGuonStone.Init();
+            //SpinGuonStone.Init();
             //GoonStone.Init();
             Overpill.Init();
             JammomancersHat.Init();
@@ -69,7 +82,7 @@ namespace BleakMod
             //Underpill.Init();
             AegisShield.Init();
             AmmocondasNest.Init();
-            ShadesShades.Init();    
+            ShadesShades.Init();
             BeholstersBelt.Init();
             SuspiciousLookingBell.Init();
             WowTasticPaintbrush.Init();
@@ -88,6 +101,7 @@ namespace BleakMod
             //Bubbler.Add();
             StartStriker.Add();
             PrizeRifle.Add();
+            PouchLauncher.Add();
             MultiActiveReloadManager.SetupHooks();
             EasyGoopDefinitions.DefineDefaultGoops();
             //ZipFilePath = this.Metadata.Archive;
@@ -104,13 +118,11 @@ namespace BleakMod
             Log($"{MOD_NAME} v{VERSION} started successfully.", TEXT_COLOR);
         }
 
-
         public static void Log(string text, string color="#FFFFFF")
         {
             ETGModConsole.Log($"<color={color}>{text}</color>");
         }
 
-        public override void Exit() { }
-        public override void Init() { }
+        public void Awake() { }
     }
 }

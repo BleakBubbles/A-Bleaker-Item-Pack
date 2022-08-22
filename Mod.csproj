@@ -35,76 +35,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp.Base.mm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\Assembly-CSharp.Base.mm.dll</HintPath>
-    </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\Ionic.Zip.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\MonoMod.RuntimeDetour.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\MonoMod.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayMaker, Version=1.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\PlayMaker.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.Base.mm">
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.Base.mm.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule.Base.mm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.CoreModule.Base.mm.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.ImageConversionModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.JSONSerializeModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.JSONSerializeModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.TextRenderingModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CustomItems\CustomItems\bin\Debug\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="Guns\PouchLauncher.cs" />
+    <Compile Include="Items\SpinGuonStone.cs" />
     <Compile Include="Tools\AdvancedGameStats.cs" />
     <Compile Include="Tools\AdvancedGameStatsManager.cs" />
     <Compile Include="Tools\AdvancedMidGameSaveData.cs" />
     <Compile Include="Tools\BasicGunTools.cs" />
     <Compile Include="Tools\BreachShopTool.cs" />
+    <Compile Include="Tools\ProjectileTools.cs" />
     <Compile Include="Tools\CustomCharacterSpecificGungeonFlags.cs" />
     <Compile Include="Tools\CustomDungeonFlags.cs" />
     <Compile Include="Tools\CustomDungeonFlagsComparer.cs" />
@@ -287,6 +225,9 @@
     <EmbeddedResource Include="Resources\gundromeda_pain.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\spinner_guon_stone.png" />
+    <EmbeddedResource Include="Resources\spin_stone.png" />
+    <EmbeddedResource Include="Resources\spin_guon_stone.png" />
     <EmbeddedResource Include="Resources\trick_shot.png" />
     <EmbeddedResource Include="Resources\winchester_targets\winchester_target_008.png" />
     <EmbeddedResource Include="Resources\winchester_targets\winchester_target_009.png" />
@@ -380,6 +321,66 @@
     <EmbeddedResource Include="Resources\chamber_of_frogs.png" />
     <Content Include="Resources\glass_cannon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="0Harmony, Version=2.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\core\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Alexandria">
+      <HintPath>..\..\..\..\AppData\Roaming\Thunderstore Mod Manager\DataFolder\ETG\profiles\Default\BepInEx\plugins\Alexandria-Alexandria\Alexandria.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx, Version=5.4.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\core\BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="ModTheGungeonAPI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\plugins\MtGAPI\ModTheGungeonAPI.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil, Version=0.10.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\core\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour, Version=22.1.29.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\core\MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils, Version=22.1.29.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\BepInEx\core\MonoMod.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Enter the Gungeon\EtG_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

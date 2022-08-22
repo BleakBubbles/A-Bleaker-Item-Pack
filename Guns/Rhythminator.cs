@@ -75,7 +75,7 @@ namespace BleakMod
 		}
 
 		// Token: 0x06000194 RID: 404 RVA: 0x0000CFE8 File Offset: 0x0000B1E8
-		protected void Update()
+		public override void Update()
 		{
 			if (this.gun.CurrentOwner)
 			{

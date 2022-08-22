@@ -54,8 +54,10 @@ namespace BleakMod
             }
             if (this.hasExtraDamage)
             {
+                this.newDamage = proj.baseData.damage;
                 proj.baseData.damage += this.extraDamage;
                 this.hasExtraDamage = false;
+                this.extraDamage = 0;
                 this.DisableVFX(base.Owner);
             }
         }
@@ -71,7 +73,7 @@ namespace BleakMod
             {
                 if(myRigidbody.projectile.baseData.damage > otherRigidbody.healthHaver.GetCurrentHealth())
                 {
-                    this.extraDamage = myRigidbody.projectile.baseData.damage - otherRigidbody.healthHaver.GetCurrentHealth();
+                    this.extraDamage = Math.Min(myRigidbody.projectile.baseData.damage, newDamage) - otherRigidbody.healthHaver.GetCurrentHealth();
                     this.hasExtraDamage = true;
                     Material outlineMaterial = SpriteOutlineManager.GetOutlineMaterial(base.Owner.sprite);
                     outlineMaterial.SetColor("_OverrideColor", new Color32(120, 190, 85, 50));
@@ -99,6 +101,7 @@ namespace BleakMod
             }
         }
         public float extraDamage;
+        public float newDamage = float.MaxValue;
         public bool hasExtraDamage;
     }
 }

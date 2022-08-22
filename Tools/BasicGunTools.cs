@@ -1,7 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
-
+using System.Collections;
+using System.Linq;
 
 namespace BleakMod
 {
@@ -131,6 +132,8 @@ namespace BleakMod
                 float y = (float)overrideColliderPixelHeight.Value / 16f;
                 proj.GetAnySprite().spriteId = ETGMod.Databases.Items.ProjectileCollection.inst.GetSpriteIdByName(name);
                 tk2dSpriteDefinition tk2dSpriteDefinition = ETGMod.Databases.Items.ProjectileCollection.inst.spriteDefinitions[(PickupObjectDatabase.GetById(12) as Gun).DefaultModule.projectiles[0].GetAnySprite().spriteId].CopyDefinitionFrom();
+                tk2dSpriteDefinition.materialInst.mainTexture = proj.GetAnySprite().CurrentSprite.materialInst.mainTexture;
+                tk2dSpriteDefinition.uvs = proj.GetAnySprite().CurrentSprite.uvs.ToArray();
                 tk2dSpriteDefinition.boundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);
                 tk2dSpriteDefinition.boundsDataExtents = new Vector3(num, num2, 0f);
                 tk2dSpriteDefinition.untrimmedBoundsDataCenter = new Vector3(num / 2f, num2 / 2f, 0f);

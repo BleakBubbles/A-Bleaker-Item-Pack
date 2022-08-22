@@ -41,7 +41,7 @@ namespace BleakMod
             //Adds the actual passive effect to the item
             item.SetupUnlockOnFlag(GungeonFlags.SECRET_BULLETMAN_SEEN_05, true);
             //Set the rarity of the item
-            item.quality = PickupObject.ItemQuality.A;
+            item.quality = PickupObject.ItemQuality.B;
         }
         public void OnEnteredCombat()
         {

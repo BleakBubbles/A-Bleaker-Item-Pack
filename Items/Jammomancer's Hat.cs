@@ -8,7 +8,6 @@ using ItemAPI;
 using DirectionType = DirectionalAnimation.DirectionType;
 using AnimationType = ItemAPI.CompanionBuilder.AnimationType;
 using MultiplayerBasicExample;
-using System.Timers;
 using HutongGames.PlayMaker.Actions;
 using HutongGames;
 
